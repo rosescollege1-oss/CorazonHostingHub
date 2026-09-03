@@ -142,7 +142,7 @@
     .flash-face.back{transform:rotateY(180deg);background:#fff9f4}
     .flash-face .cat{font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.15em;color:var(--terracotta);margin-bottom:14px}
     .flash-face h3{font-size:34px;margin:0;max-width:90%}
-    .flash-face p{font-size:18px;max-width:90%;color:#51433d}
+    .flash-face p{font-size:18px;max-width:90%;color:#51433d;white-space:pre-line}
     .flip-hint{font-size:12px;color:var(--muted);margin-top:18px}
     .flash-actions{display:flex;justify-content:center;flex-wrap:wrap;gap:9px;margin-top:14px}
     .flash-counter{text-align:center;color:var(--muted);font-size:13px;margin-top:10px}
@@ -218,7 +218,7 @@
     <!-- CHECKLISTS -->
     <section class="view active" id="checklists">
       <div class="hero-small">
-        <div><div class="eyebrow">Daily Shift Tools</div><h2>Opening & Closing</h2><p class="subtle">Tap each task as you finish it. Checklists reset automatically on a new calendar day.</p></div>
+        <div><h2>Opening & Closing</h2></div>
         <span class="pill" id="todayPill">Today</span>
       </div>
       <div class="grid-2">
@@ -240,7 +240,7 @@
     <!-- HANDBOOK -->
     <section class="view" id="handbook">
       <div class="hero-small">
-        <div><div class="eyebrow">Reference</div><h2>Host Handbook</h2><p class="subtle">The procedures from the host sheet, reorganized for quick iPad reference.</p></div>
+        <div><h2>Host Handbook</h2></div>
         <button class="btn secondary" onclick="window.print()">Print handbook</button>
       </div>
       <div class="handbook-nav" id="handbookNav">
@@ -304,20 +304,19 @@
     <!-- ROTATION -->
     <section class="view" id="rotation">
       <div class="hero-small">
-        <div><div class="eyebrow">Floor Tool</div><h2>Server Rotation</h2><p class="subtle">Tracks order, parties and covers without changing the rotation based on cover count.</p></div>
+        <div><h2>Server Rotation</h2></div>
         <button class="btn secondary" onclick="resetRotation()">Start new shift</button>
       </div>
       <div class="rotation-layout">
         <div>
           <div class="card">
-            <div class="split-title"><div><h3>Rotation Order</h3><p class="subtle">Add servers in the order they should receive tables. Use arrows to adjust the lineup before service.</p></div><span class="pill" id="serverCountPill">0 servers</span></div>
+            <div class="split-title"><div><h3>Rotation Order</h3><p class="subtle">Add servers in the order they should receive tables.</p></div><span class="pill" id="serverCountPill">0 servers</span></div>
             <div class="setup-row"><input id="serverNameInput" type="text" autocomplete="off" placeholder="Server name"><button class="btn" id="addServerBtn">Add</button></div>
             <div class="server-list" id="serverList"></div>
-            <div class="note section-space">The cover counts shown here are informational only. Do not use them to rebalance the rotation.</div>
-          </div>
+                     </div>
 
           <div class="card section-space">
-            <div class="split-title"><div><h3>Seating History</h3><p class="subtle">Newest entry appears first.</p></div><button class="btn secondary small" id="undoBtn">Undo last</button></div>
+            <div class="split-title"><div><h3>Seating History</h3><p class="subtle"> </p></div><button class="btn secondary small" id="undoBtn">Undo last</button></div>
             <div class="history" id="historyList"></div>
           </div>
         </div>
@@ -333,19 +332,22 @@
             <button class="btn sage" id="seatBtn">Seat current server</button>
             <button class="btn terracotta" id="skipBtn">Skip this turn</button>
           </div>
-          <p class="tiny">A skip advances the rotation but does not add covers or a table.</p>
-        </aside>
+                  </aside>
       </div>
     </section>
 
     <!-- FLASHCARDS -->
     <section class="view" id="flashcards">
       <div class="hero-small">
-        <div><div class="eyebrow">Menu University</div><h2>Menu Flashcards</h2><p class="subtle">Free, local study tools: flashcards, quizzes, missed-only practice and mastery tracking.</p></div>
+        <div><div class="eyebrow">Menu University</div><h2>Menu Flashcards</h2><p class="subtle">Free, local study tools: menu flashcards, the First Serving Test, quizzes, missed-only practice and mastery tracking.</p></div>
         <span class="pill" id="deckCountPill">0 cards</span>
       </div>
       <div class="card">
         <div class="study-toolbar">
+          <select id="deckFilter" aria-label="Flashcard set">
+            <option value="menu">Menu Flashcards</option>
+            <option value="serving">First Serving Test</option>
+          </select>
           <select id="categoryFilter"></select>
           <label class="pill"><input type="checkbox" id="missedOnly" style="accent-color:var(--wine)"> Missed only</label>
           <button class="btn secondary small" id="shuffleBtn">Shuffle</button>
@@ -380,14 +382,14 @@
           <div class="split-title"><div><h3>Mastery Overview</h3><p class="subtle" id="masterySummary"></p></div></div>
           <div class="mastery-grid" id="masteryGrid"></div>
         </div>
-        <div class="source-note">Menu deck built from Corazón’s official online menu. Menu items can change—verify anything operational against the current restaurant menu.</div>
+        
       </div>
     </section>
 
     <!-- TRAINER -->
     <section class="view" id="trainer">
       <div class="hero-small">
-        <div><div class="eyebrow">Trainer Mode</div><h2>Trainee Sign-Off</h2><p class="subtle">Keep simple training progress and notes on this iPad—no account or database required.</p></div>
+        <div><div class="eyebrow">Trainer Mode</div><h2>Trainee Sign-Off</h2><p class="subtle">Keep simple training progress and notes here.</p></div>
       </div>
       <div class="trainer-layout">
         <div class="card">
@@ -415,7 +417,7 @@
       <div class="button-row"><button class="btn" id="exportBtn">Export backup</button><label class="btn secondary" for="importFile">Restore backup</label><input id="importFile" type="file" accept="application/json" hidden></div>
       <div class="divider"></div>
       <h4>About this build</h4>
-      <p class="tiny">Built as a single self-contained HTML file for GitHub Pages / Safari Home Screen use. Host procedures are based on the provided Corazón host sheet. Menu study cards are based on the restaurant’s official online menu as retrieved September 2026.</p>
+      <p class="tiny">Built as a single self-contained HTML file for GitHub Pages / Safari Home Screen use. Host procedures are based on the provided Corazón host sheet. Menu study cards are based on the restaurant’s official online menu as retrieved September 2026. The First Serving Test deck uses the Quizlet cards provided by the user.</p>
       <div class="divider"></div>
       <button class="btn danger" id="clearAllBtn">Clear all saved app data</button>
     </div>
@@ -468,7 +470,7 @@
   ];
   const rotationInstructions = [
     'Find the rotation tab of the spreadsheet / floor chart.',
-    'Enter the servers in the top row in the correct starting order. The original host sheet says to use arrival order and ask any doubles if they would like to be last.',
+    'Enter the servers in the top row in the correct starting order. Use arrival order and ask any doubles if they would like to be last.',
     'As tables come in, seat according to the rotation and record which server received the table.',
     'Record how many people are in the party and which table they are seated at.',
     'If a server asks to be skipped, mark the skip and move to the next server.'
@@ -527,409 +529,144 @@
   ];
 
   const menuCards = [
-    {
-        "c": "Serving Test",
-        "n": "List 3 things guests at Corazon should be able to expect.",
-        "d": "High quality food
-Locally sourced ingredients
-Extensive tequila selection
-Great hospitality experience"
-    },
-    {
-        "c": "Serving Test",
-        "n": "We strive to provide _________ without __________.",
-        "d": "Luxury, pretension"
-    },
-    {
-        "c": "Serving Test",
-        "n": "List the 4 hospitality principles.",
-        "d": "Anticipate needs
-Present without hovering
-Never rush
-Equal respect to guests"
-    },
-    {
-        "c": "Serving Test",
-        "n": "Give 3 examples of negative body language.",
-        "d": "Rolling eyes
-Hands on hips
-Crossed arms
-Fidgeting"
-    },
-    {
-        "c": "Serving Test",
-        "n": "List the first 3 steps of service.",
-        "d": "Welcome the guest/napkin in lap
-Water service
-Menu tour"
-    },
-    {
-        "c": "Serving Test",
-        "n": "Where did Aguachile originate from?",
-        "d": "Sinaloa"
-    },
-    {
-        "c": "Serving Test",
-        "n": "What does Tatemado mean?",
-        "d": "Fires roasted/charred"
-    },
-    {
-        "c": "Serving Test",
-        "n": "What is Tiger's Milk?",
-        "d": "A Peruvian sauce made with celery, lime juice, red onion, cilantro, ginger, & ahiemo peppers"
-    },
-    {
-        "c": "Serving Test",
-        "n": "What are 4 things guests expect staff to understand in an upscale Mexican restaurant?",
-        "d": "Food offering
-Culture
-Alcohol pairings
-Tequila/Mezcal knowledge"
-    },
-    {
-        "c": "Serving Test",
-        "n": "What are the five service recovery standards that can be found in your training packet?",
-        "d": "B- believe
-L- listen
-A- apologize
-S- solve
-T- thank"
-    },
-    {
-        "c": "Serving Test",
-        "n": "Name 4 common mistakes servers should avoid during service.",
-        "d": "Talking too much
-Not anticipating needs
-Avoiding eye contact
-Ordering out of order
-Forgetting names/orders
-Negative body language"
-    },
-    {
-        "c": "Serving Test",
-        "n": "What does a great menu tour help with?",
-        "d": "It helps to give the guest suggestions while giving us a chance to highlight different areas of Mexico & introduce them to new things"
-    },
-    {
-        "c": "Serving Test",
-        "n": "On what date was the Caesar salad created?",
-        "d": "July 4, 1924"
-    },
-    {
-        "c": "Serving Test",
-        "n": "What noodles are used for the Fideo Seco?",
-        "d": "Fideo"
-    },
-    {
-        "c": "Serving Test",
-        "n": "What does Seco mean?",
-        "d": "Dry"
-    },
-    {
-        "c": "Serving Test",
-        "n": "Where does the San Sebastián Cheesecake come from?",
-        "d": "Spain"
-    },
-    {
-        "c": "Serving Test",
-        "n": "Which shareable contains peanut sauce?",
-        "d": "Grilled Panela Cheese"
-    },
-    {
-        "c": "Serving Test",
-        "n": "Which raw bar item should a guest avoid if they have a soy allergy?",
-        "d": "Yellowfin Tuna"
-    },
-    {
-        "c": "Serving Test",
-        "n": "Which shareable features lobster?",
-        "d": "Lobster Elote"
-    },
-    {
-        "c": "Serving Test",
-        "n": "Which shareables come with house made corn tortillas?",
-        "d": "Queso Fundido, Pork Belly, Grilled Panela Cheese"
-    },
-    {
-        "c": "Serving Test",
-        "n": "What is the difference between the Seabass Ceviche and the Shrimp Aguachile?",
-        "d": "Ceviche comes with tostadas that the guest builds themselves
-Shrimp Aguachile comes on two preassembled tostadas"
-    },
-    {
-        "c": "Serving Test",
-        "n": "Give your script for why we do not carry ranch.",
-        "d": "All of our house made dressings are created with specific dishes in mind, carefully crafted to pair perfectly with our menu items."
-    },
-    {
-        "c": "Serving Test",
-        "n": "Can we add chicken to the Aztec soup?",
-        "d": "Yes; you can add a side of grilled chicken for $6"
-    },
-    {
-        "c": "Serving Test",
-        "n": "What dressing comes on the Ensalada de Pollo?",
-        "d": "No dressing. This is a mayo based chicken salad that comes on the 1/2 avocado"
-    },
-    {
-        "c": "Serving Test",
-        "n": "Give me your script for the Roasted Cream Corn.",
-        "d": "We start by fire roasting our corn, then we shave it off of the cob, combine it with peppers and top it with our 3 cheese Monterey blend."
-    },
-    {
-        "c": "Serving Test",
-        "n": "What makes our Mole Rojo special?",
-        "d": "It's our 16 ingredient sauce filled with 5 different types of peppers, onions, garlic, Mexican chocolate, white & black sesame seeds and chicken bouillon."
-    },
-    {
-        "c": "Serving Test",
-        "n": "Which rice accompanies the Mole Rojo Enchiladas?",
-        "d": "Mexican Rice"
-    },
-    {
-        "c": "Serving Test",
-        "n": "What protein is used in the Mole Rojo Enchiladas?",
-        "d": "Shredded Chicken"
-    },
-    {
-        "c": "Serving Test",
-        "n": "What sauce is used on the Crema Verde Enchiladas?",
-        "d": "Creamy Tomatillo Salsa"
-    },
-    {
-        "c": "Serving Test",
-        "n": "What rice comes with the Crema Verde Enchiladas?",
-        "d": "Creamy Poblano Rice"
-    },
-    {
-        "c": "Serving Test",
-        "n": "Which enchiladas contain seafood?",
-        "d": "Lobster & shrimp"
-    },
-    {
-        "c": "Serving Test",
-        "n": "What seafood is in the Langosta Camaron?",
-        "d": "Shrimp & Lobster"
-    },
-    {
-        "c": "Serving Test",
-        "n": "What cheese are in our cheese blend?",
-        "d": "Monterey, Oaxaca, Cotija"
-    },
-    {
-        "c": "Serving Test",
-        "n": "What vegetables are featured in the Raja Enchiladas?",
-        "d": "Poblano Peppers & Corn"
-    },
-    {
-        "c": "Serving Test",
-        "n": "Are the Rajas Enchiladas vegetarian?",
-        "d": "Yes"
-    },
-    {
-        "c": "Serving Test",
-        "n": "Are the Rajas Enchiladas vegan?",
-        "d": "No"
-    },
-    {
-        "c": "Serving Test",
-        "n": "What protein is used in the Bistec Enchiladas?",
-        "d": "Prime Ribeye"
-    },
-    {
-        "c": "Serving Test",
-        "n": "What cheese is found in the Bistec Enchiladas?",
-        "d": "Oaxaca"
-    },
-    {
-        "c": "Serving Test",
-        "n": "Which enchiladas are served with Creamy Poblano Rice?",
-        "d": "Verde & Langosta Cameron"
-    },
-    {
-        "c": "Serving Test",
-        "n": "Which enchiladas are served with Mexican Rice?",
-        "d": "Mole, Rajas, Bistec"
-    },
-    {
-        "c": "Serving Test",
-        "n": "How many tacos come in an order?",
-        "d": "2"
-    },
-    {
-        "c": "Serving Test",
-        "n": "What kind of tortillas are used for tacos.",
-        "d": "Corn"
-    },
-    {
-        "c": "Serving Test",
-        "n": "What cut of beef is used in the Cachetada Taco?",
-        "d": "Seared Prime Ribeye"
-    },
-    {
-        "c": "Serving Test",
-        "n": "What cheese is used on the Cachetada Taco?",
-        "d": "Panela"
-    },
-    {
-        "c": "Serving Test",
-        "n": "How did the Cachetada Taco get its name?",
-        "d": "\"Slap your mama\" because we slap the cheese on the grill"
-    },
-    {
-        "c": "Serving Test",
-        "n": "How is the tuna prepared for the Tuna Tacos?",
-        "d": "Blackened"
-    },
-    {
-        "c": "Serving Test",
-        "n": "Which salsa comes on the Cachetada Taco?",
-        "d": "Avocado Salsa"
-    },
-    {
-        "c": "Serving Test",
-        "n": "Name 3 toppings on the Tuna Taco.",
-        "d": "Salsa Matcha
-Limey slaw
-Cilantro
-Spicy mayo
-Grilled pineapple"
-    },
-    {
-        "c": "Serving Test",
-        "n": "Name 3 toppings on the Brisket Taco.",
-        "d": "Pickled red onion
-Fresh jalapeño
-Queso fresco"
-    },
-    {
-        "c": "Serving Test",
-        "n": "Which taco contains bacon?",
-        "d": "Gobernador"
-    },
-    {
-        "c": "Serving Test",
-        "n": "Which taco contains lobster?",
-        "d": "Lobster taco"
-    },
-    {
-        "c": "Serving Test",
-        "n": "What are the proteins in the Gobernador?",
-        "d": "Shrimp & bacon"
-    },
-    {
-        "c": "Serving Test",
-        "n": "What sauce is on the Lobster Taco?",
-        "d": "Creamy Chorizo"
-    },
-    {
-        "c": "Serving Test",
-        "n": "Which enchiladas would you recommend to a guest with a seafood allergy?",
-        "d": "Rajas, Mole, Verde, Brisket"
-    },
-    {
-        "c": "Serving Test",
-        "n": "How did the Gobernador get its name?",
-        "d": "The governor of Melazan wanted a taco/quesadilla combo"
-    },
-    {
-        "c": "Serving Test",
-        "n": "Which taco would you recommend to a guest who wants a sweet & spicy combo?",
-        "d": "Tuna - limey slaw, spicy mayo, & grilled pineapple"
-    },
-    {
-        "c": "Serving Test",
-        "n": "Who created the Creamy Chorizo sauce?",
-        "d": "Joey Godoy"
-    },
-    {
-        "c": "Serving Test",
-        "n": "What comes on the Avocado Salad?",
-        "d": "Avocado, hearts of palm, lime vinaigrette, bed of lettuce,
-Pepitas, tomatoes"
-    },
-    {
-        "c": "Serving Test",
-        "n": "Explain the Esquite Tatemado.",
-        "d": "Served in a roasted corn husk, it's the Corazon spin on the Mexican Elote snack. Our fire roasted corn, Mexican crema, peppers and three cheese blend takes this favorite to a new level."
-    },
-    {
-        "c": "Serving Test",
-        "n": "Explain the Roasted Brussels.",
-        "d": "Fresh Brussels oven baked then tossed in our Agave Vinaigrette. It's the perfect combination of sweet, spicy, & savory"
-    },
-    {
-        "c": "Serving Test",
-        "n": "Name 7 of the 16 ingredients found in our Mole",
-        "d": "Adobe Peppers
-Black sesame seeds
-White sesame seeds
-Mexican chocolate
-Garlic
-Onion
-Chicken Bouillon"
-    },
-    {
-        "c": "Serving Test",
-        "n": "What can cut down on the earthiness of the Mole?",
-        "d": "Salt"
-    },
-    {
-        "c": "Serving Test",
-        "n": "What paste is used for the Creamy Chorizo Sauce and where is it from?",
-        "d": "Hanssa Paste, Africa"
-    },
-    {
-        "c": "Serving Test",
-        "n": "What does Borracho mean?",
-        "d": "Drunk"
-    },
-    {
-        "c": "Serving Test",
-        "n": "What vegetables are in the Corn Succotash?",
-        "d": "Fire roasted corn, red onion, Mexican zucchini, pepper, red & orange bell peppers, jalapeños"
-    },
-    {
-        "c": "Serving Test",
-        "n": "Describe the Creamy Poblano Rice.",
-        "d": "A creamy Mexican risotto with Poblano peppers"
-    },
-    {
-        "c": "Serving Test",
-        "n": "What is one thing that makes our Mexican rice different from other Mexican restaurants?",
-        "d": "We use fresh tomatoes"
-    },
-    {
-        "c": "Serving Test",
-        "n": "Name all of the ingredients in the Yellowfin Tuna Tiradito.",
-        "d": "Tuna, Avocado, Citrus, Soy, Baby Greens"
-    },
-    {
-        "c": "Serving Test",
-        "n": "What's the difference between our Ceviche and other ceviches?",
-        "d": "Instead of boiled shrimp, we use a high quality Sea Bass and instead of a solely citrus based sauce, we use Tiger Milk."
-    },
-    {
-        "c": "Serving Test",
-        "n": "What sauce comes on the Papas Adobadas?",
-        "d": "Smoked Adobo Sauce"
-    },
-    {
-        "c": "Serving Test",
-        "n": "Name the vegetables that come on the Grilled Panela Cheese.",
-        "d": "Fresh respect & green tomatoes, jalapeños, avocado, & cilantro"
-    },
-    {
-        "c": "Serving Test",
-        "n": "What is a Pepita?",
-        "d": "Green, edible kernels of specific pumpkin varieties"
-    },
-    {
-        "c": "Serving Test",
-        "n": "What is the vibrant green sauce on the Green Spaghetti made from?",
-        "d": "Roasted Poblano Peppers"
-    }
-];
+    {c:'Raw Bar',n:'Yellowfin Tuna Tiradito',d:'Tuna, avocado, citrus, soy, and baby greens.'},
+    {c:'Raw Bar',n:'Shrimp Aguachile Verde',d:'Tostadas, cilantro-serrano broth, cucumber, avocado, serrano slices, radishes, citrus juice, and red piquín pepper powder.'},
+    {c:'Raw Bar',n:'Sea Bass Ceviche',d:'Pineapple, tomatoes, red onions, avocado, cucumber, cilantro, and tiger milk sauce.'},
+    {c:'Shareables',n:'Roasted Brussels',d:'Spiced agave vinaigrette, queso fresco, and pepitas.'},
+    {c:'Shareables',n:'Esquite Tatemado',d:'Fresh roasted corn, cotija cheese, cilantro, lime, crema, and crushed piquín pepper.'},
+    {c:'Shareables',n:'Papas Adobadas',d:'Golden potatoes sautéed and glazed in smoky adobo sauce with warm spices and gentle heat, finished with chopped cilantro.'},
+    {c:'Shareables',n:'Queso Fundido',d:'Oaxaca, Monterey and Cotija cheeses, chorizo sauce, poblano slivers, chipotle honey, and homemade tortillas.'},
+    {c:'Shareables',n:'Grilled Panela Cheese',d:'Red and green cherry tomatoes, jalapeño, avocado, cilantro, pepitas, peanut sauce, and homemade corn tortillas.'},
+    {c:'Shareables',n:'Lobster Elote',d:'Lobster, roasted corn off the cob, sriracha crema, Monterey cheese blend, chile powder, and shaved parmesan.'},
+    {c:'Shareables',n:'Brisket Sopes',d:'Refried pinto beans, lettuce, crema, cotija cheese, and creamy tomatillo salsa.'},
+    {c:'Shareables',n:'Quesadillitas Fritas',d:'Hand-pressed quesadillas, fried and stuffed with chorizo.'},
+    {c:'Soups & Salads',n:'Caesar Salad',d:'Gem romaine lettuce, toasted garlic-anchovy ancho crumble, parmesan cheese, and house Caesar dressing.'},
+    {c:'Soups & Salads',n:'Roasted Cream of Corn Soup',d:'House-made creamy roasted corn soup.'},
+    {c:'Soups & Salads',n:'Ensalada de Pollo',d:'Corazón’s take on chicken salad, served on a bed of mixed greens and lime.'},
+    {c:'Soups & Salads',n:'Fideo Seco',d:'Traditional fideo cooked in a medley of red Mexican peppers, reduced and served with fresh cheese, crema, and avocado.'},
+    {c:'Soups & Salads',n:'Avocado Salad',d:'Fresh tomatoes, hearts of palm, romaine, queso fresco, and lime vinaigrette.'},
+    {c:'Soups & Salads',n:'Aztec Soup',d:'Traditional homemade soup with crispy tortilla strips.'},
+    {c:'Enchiladas',n:'Mole Rojo',d:'Chicken and rich smoky mole wrapped in a homemade tortilla, served with Mexican rice.'},
+    {c:'Enchiladas',n:'Langosta or Camarón',d:'Lobster and shrimp, toasted garlic, onions, Oaxaca cheese blend, creamy chorizo sauce, crema, and creamy poblano rice.'},
+    {c:'Enchiladas',n:'Crema Verde',d:'Grilled chicken with homemade creamy tomatillo sauce and creamy poblano white rice.'},
+    {c:'Enchiladas',n:'Rajas Enchiladas',d:'Roasted poblano peppers and corn in a creamy house sauce, served with Mexican rice.'},
+    {c:'Enchiladas',n:'Bistec Enchiladas',d:'Ribeye, grilled onions, Oaxaca cheese, creamy verde sauce, Mexican rice, and red salsa.'},
+    {c:'Tacos',n:'Cachetada Taco',d:'Seared prime ribeye, grilled panela cheese, creamy tomatillo salsa, and charred onion.'},
+    {c:'Tacos',n:'Lobster Taco',d:'Lobster, zesty slaw, grilled corn tortilla, and creamy chorizo sauce.'},
+    {c:'Tacos',n:'Tuna Taco',d:'Blackened seared tuna, limey slaw, spicy mayo, grilled pineapple, grilled corn tortilla, and salsa macha.'},
+    {c:'Tacos',n:'Brisket Taco',d:'Mexican smoked brisket, red pickled onion, fresh jalapeños, creamy tomatillo salsa, and queso fresco.'},
+    {c:'Tacos',n:'Gobernador Taco',d:'Sautéed shrimp, bacon, bell peppers, Oaxaca cheese, onion, and grilled corn tortilla.'},
+    {c:'Tacos',n:'Rajas Taco',d:'Roasted poblano peppers and corn in a creamy house sauce.'},
+    {c:'Entrées',n:'Grilled Sea Bass',d:'6 oz Chilean sea bass on creamy poblano rice with roasted corn succotash.'},
+    {c:'Entrées',n:'Green Spaghetti',d:'Mexican pasta with a creamy vibrant green sauce made from roasted poblano peppers.'},
+    {c:'Entrées',n:'Chipotle Pasta',d:'Pan-seared chicken, green/red/yellow peppers, asparagus, and peas in a chipotle-parmesan cream sauce.'},
+    {c:'Entrées',n:'Pollo en Mole Michoacano',d:'Roasted chicken in a hearty mole sauce, served with Mexican rice.'},
+    {c:'De La Parrilla',n:'Filet 6 oz',d:'Certified Angus Beef filet served straight off the grill with asparagus and grilled onion.'},
+    {c:'De La Parrilla',n:'White Prawns (4)',d:'Four white prawns served straight off the grill with asparagus and grilled onion.'},
+    {c:'De La Parrilla',n:'Chicken Breast',d:'Chicken breast served straight off the grill with asparagus and grilled onion.'},
+    {c:'De La Parrilla',n:'Ribeye 16 oz',d:'Certified Angus Beef 16 oz ribeye served straight off the grill with asparagus and grilled onion.'},
+    {c:'Brunch',n:'Dulce de Leche French Toast',d:'French toast with traditional Mexican caramel for a deep dairy flavor and rich finish.'},
+    {c:'Brunch',n:'MaMa Chila’s Hotcakes',d:'Scratch-made hotcakes finished with Lechera drizzle.'},
+    {c:'Brunch',n:'Chilaquiles — Ribeye',d:'Crispy tortilla chips simmered in red or green salsa, topped with cheese, crema, onion, and ribeye.'},
+    {c:'Brunch',n:'Chilaquiles — Chicken',d:'Crispy tortilla chips simmered in red or green salsa, topped with cheese, crema, onion, and chicken.'},
+    {c:'Brunch',n:'Chilaquiles — Egg',d:'Crispy tortilla chips simmered in red or green salsa, topped with cheese, crema, onion, and egg.'},
+    {c:'Brunch',n:'Sopes Benedict',d:'Handmade sopes, refried beans, papas con chorizo, poached eggs, chorizo sauce, crema, queso fresco, and breakfast potatoes.'},
+    {c:'Brunch',n:'Brisket Benedicts',d:'Poached eggs over bolillo with smoked brisket, creamy salsa verde, onion, cilantro, queso cotija, and breakfast potatoes.'},
+    {c:'Brunch',n:'Molletes — Ribeye',d:'Golden toasted bolillo, refried beans, melted cheese, pico, and ribeye.'},
+    {c:'Brunch',n:'Molletes — Egg',d:'Golden toasted bolillo, refried beans, melted cheese, pico, and egg.'},
+    {c:'Brunch',n:'Huevos con Papas',d:'Adobo potatoes, two eggs prepared to your liking, chorizo, queso fresco, cilantro, and pickled onions.'},
+    {c:'Brunch',n:'Ensalada de Frutas',d:'Seasonal fruit with local organic honey, granola, and whipped cream.'},
+    {c:'Brunch',n:'Organic Greek Yogurt Bowl',d:'Organic Greek yogurt topped with seasonal fruit, chia seeds, and granola.'},
+    {c:'Brunch',n:'Arroz con Leche',d:'Creamy cinnamon-vanilla rice pudding with a touch of sweetness.'},
+    {c:'Margaritas',n:'Corazón Margarita',d:'Corazón Reposado with vanilla-oak notes, bright citrus, and a hibiscus ice sphere that adds floral, tart notes as it melts.'},
+    {c:'Margaritas',n:'Lavender Lychee Margarita',d:'Lychee juice, house lavender syrup, tequila, fresh lime juice, and orange liqueur.'},
+    {c:'Margaritas',n:'Peach Bellini Margarita',d:'Homemade peach purée, blanco tequila, orange liqueur, fresh lime juice, and a splash of Prosecco.'},
+    {c:'Margaritas',n:'Skinny Paloma-rita',d:'Fresh grapefruit, lime, orange, and agave nectar; a lighter paloma-meets-margarita style drink.'},
+    {c:'Mocktails',n:'Beso Verde',d:'Fresh kiwi, muddled mint, lime juice, simple syrup, and sparkling water.'},
+    {c:'Mocktails',n:'Lime Passion',d:'Passion fruit, fresh lime juice, mint, and sparkling water.'},
+    {c:'Mocktails',n:'Rosa Corazón',d:'Guava purée, fresh grapefruit, ginger soda, and lime juice.'},
+    {c:'Mocktails',n:'Jamaica Collins',d:'House hibiscus infusion with fresh lime juice and sparkling water.'},
+    {c:'Cocktails',n:'Tinte',d:'Smoky mezcal, St-Germain, Midori, fresh lime juice, and agave nectar.'},
+    {c:'Cocktails',n:'Kiwi Loco',d:'Fresh kiwi and mint with smoky blanco mezcal, lime, and agave nectar.'},
+    {c:'Cocktails',n:'Dragonfruit Lemondrop',d:'Vodka, orange liqueur, fresh lemon juice, and house dragonfruit syrup.'},
+    {c:'Cocktails',n:'Old Fashioned El Ahumado',d:'Mezcal, house piloncillo simple syrup, orange bitters, and chocolate bitters.'}
+  ];
+
+  const servingTestCards = [
+    {"c": "First Serving Test", "n": "List 3 things guests at Corazon should be able to expect.", "d": "High quality food\nLocally sourced ingredients\nExtensive tequila selection\nGreat hospitality experience"},
+    {"c": "First Serving Test", "n": "We strive to provide _________ without __________.", "d": "Luxury, pretension"},
+    {"c": "First Serving Test", "n": "List the 4 hospitality principles.", "d": "Anticipate needs\nPresent without hovering\nNever rush\nEqual respect to guests"},
+    {"c": "First Serving Test", "n": "Give 3 examples of negative body language.", "d": "Rolling eyes\nHands on hips\nCrossed arms\nFidgeting"},
+    {"c": "First Serving Test", "n": "List the first 3 steps of service.", "d": "Welcome the guest/napkin in lap\nWater service\nMenu tour"},
+    {"c": "First Serving Test", "n": "Where did Aguachile originate from?", "d": "Sinaloa"},
+    {"c": "First Serving Test", "n": "What does Tatemado mean?", "d": "Fires roasted/charred"},
+    {"c": "First Serving Test", "n": "What is Tiger's Milk?", "d": "A Peruvian sauce made with celery, lime juice, red onion, cilantro, ginger, & ahiemo peppers"},
+    {"c": "First Serving Test", "n": "What are 4 things guests expect staff to understand in an upscale Mexican restaurant?", "d": "Food offering\nCulture\nAlcohol pairings\nTequila/Mezcal knowledge"},
+    {"c": "First Serving Test", "n": "What are the five service recovery standards that can be found in your training packet?", "d": "B- believe\nL- listen\nA- apologize\nS- solve\nT- thank"},
+    {"c": "First Serving Test", "n": "Name 4 common mistakes servers should avoid during service.", "d": "Talking too much\nNot anticipating needs\nAvoiding eye contact\nOrdering out of order\nForgetting names/orders\nNegative body language"},
+    {"c": "First Serving Test", "n": "What does a great menu tour help with?", "d": "It helps to give the guest suggestions while giving us a chance to highlight different areas of Mexico & introduce them to new things"},
+    {"c": "First Serving Test", "n": "On what date was the Caesar salad created?", "d": "July 4, 1924"},
+    {"c": "First Serving Test", "n": "What noodles are used for the Fideo Seco?", "d": "Fideo"},
+    {"c": "First Serving Test", "n": "What does Seco mean?", "d": "Dry"},
+    {"c": "First Serving Test", "n": "Where does the San Sebastián Cheesecake come from?", "d": "Spain"},
+    {"c": "First Serving Test", "n": "Which shareable contains peanut sauce?", "d": "Grilled Panela Cheese"},
+    {"c": "First Serving Test", "n": "Which raw bar item should a guest avoid if they have a soy allergy?", "d": "Yellowfin Tuna"},
+    {"c": "First Serving Test", "n": "Which shareable features lobster?", "d": "Lobster Elote"},
+    {"c": "First Serving Test", "n": "Which shareables come with house made corn tortillas?", "d": "Queso Fundido, Pork Belly, Grilled Panela Cheese"},
+    {"c": "First Serving Test", "n": "What is the difference between the Seabass Ceviche and the Shrimp Aguachile?", "d": "Ceviche comes with tostadas that the guest builds themselves\nShrimp Aguachile comes on two preassembled tostadas"},
+    {"c": "First Serving Test", "n": "Give your script for why we do not carry ranch.", "d": "All of our house made dressings are created with specific dishes in mind, carefully crafted to pair perfectly with our menu items."},
+    {"c": "First Serving Test", "n": "Can we add chicken to the Aztec soup?", "d": "Yes; you can add a side of grilled chicken for $6"},
+    {"c": "First Serving Test", "n": "What dressing comes on the Ensalada de Pollo?", "d": "No dressing. This is a mayo based chicken salad that comes on the 1/2 avocado"},
+    {"c": "First Serving Test", "n": "Give me your script for the Roasted Cream Corn.", "d": "We start by fire roasting our corn, then we shave it off of the cob, combine it with peppers and top it with our 3 cheese Monterey blend."},
+    {"c": "First Serving Test", "n": "What makes our Mole Rojo special?", "d": "It's our 16 ingredient sauce filled with 5 different types of peppers, onions, garlic, Mexican chocolate, white & black sesame seeds and chicken bouillon."},
+    {"c": "First Serving Test", "n": "Which rice accompanies the Mole Rojo Enchiladas?", "d": "Mexican Rice"},
+    {"c": "First Serving Test", "n": "What protein is used in the Mole Rojo Enchiladas?", "d": "Shredded Chicken"},
+    {"c": "First Serving Test", "n": "What sauce is used on the Crema Verde Enchiladas?", "d": "Creamy Tomatillo Salsa"},
+    {"c": "First Serving Test", "n": "What rice comes with the Crema Verde Enchiladas?", "d": "Creamy Poblano Rice"},
+    {"c": "First Serving Test", "n": "Which enchiladas contain seafood?", "d": "Lobster & shrimp"},
+    {"c": "First Serving Test", "n": "What seafood is in the Langosta Camaron?", "d": "Shrimp & Lobster"},
+    {"c": "First Serving Test", "n": "What cheese are in our cheese blend?", "d": "Monterey, Oaxaca, Cotija"},
+    {"c": "First Serving Test", "n": "What vegetables are featured in the Raja Enchiladas?", "d": "Poblano Peppers & Corn"},
+    {"c": "First Serving Test", "n": "Are the Rajas Enchiladas vegetarian?", "d": "Yes"},
+    {"c": "First Serving Test", "n": "Are the Rajas Enchiladas vegan?", "d": "No"},
+    {"c": "First Serving Test", "n": "What protein is used in the Bistec Enchiladas?", "d": "Prime Ribeye"},
+    {"c": "First Serving Test", "n": "What cheese is found in the Bistec Enchiladas?", "d": "Oaxaca"},
+    {"c": "First Serving Test", "n": "Which enchiladas are served with Creamy Poblano Rice?", "d": "Verde & Langosta Cameron"},
+    {"c": "First Serving Test", "n": "Which enchiladas are served with Mexican Rice?", "d": "Mole, Rajas, Bistec"},
+    {"c": "First Serving Test", "n": "How many tacos come in an order?", "d": "2"},
+    {"c": "First Serving Test", "n": "What kind of tortillas are used for tacos.", "d": "Corn"},
+    {"c": "First Serving Test", "n": "What cut of beef is used in the Cachetada Taco?", "d": "Seared Prime Ribeye"},
+    {"c": "First Serving Test", "n": "What cheese is used on the Cachetada Taco?", "d": "Panela"},
+    {"c": "First Serving Test", "n": "How did the Cachetada Taco get its name?", "d": "\"Slap your mama\" because we slap the cheese on the grill"},
+    {"c": "First Serving Test", "n": "How is the tuna prepared for the Tuna Tacos?", "d": "Blackened"},
+    {"c": "First Serving Test", "n": "Which salsa comes on the Cachetada Taco?", "d": "Avocado Salsa"},
+    {"c": "First Serving Test", "n": "Name 3 toppings on the Tuna Taco.", "d": "Salsa Matcha\nLimey slaw\nCilantro\nSpicy mayo\nGrilled pineapple"},
+    {"c": "First Serving Test", "n": "Name 3 toppings on the Brisket Taco.", "d": "Pickled red onion\nFresh jalapeño\nQueso fresco"},
+    {"c": "First Serving Test", "n": "Which taco contains bacon?", "d": "Gobernador"},
+    {"c": "First Serving Test", "n": "Which taco contains lobster?", "d": "Lobster taco"},
+    {"c": "First Serving Test", "n": "What are the proteins in the Gobernador?", "d": "Shrimp & bacon"},
+    {"c": "First Serving Test", "n": "What sauce is on the Lobster Taco?", "d": "Creamy Chorizo"},
+    {"c": "First Serving Test", "n": "Which enchiladas would you recommend to a guest with a seafood allergy?", "d": "Rajas, Mole, Verde, Brisket"},
+    {"c": "First Serving Test", "n": "How did the Gobernador get its name?", "d": "The governor of Melazan wanted a taco/quesadilla combo"},
+    {"c": "First Serving Test", "n": "Which taco would you recommend to a guest who wants a sweet & spicy combo?", "d": "Tuna - limey slaw, spicy mayo, & grilled pineapple"},
+    {"c": "First Serving Test", "n": "Who created the Creamy Chorizo sauce?", "d": "Joey Godoy"},
+    {"c": "First Serving Test", "n": "What comes on the Avocado Salad?", "d": "Avocado, hearts of palm, lime vinaigrette, bed of lettuce,\nPepitas, tomatoes"},
+    {"c": "First Serving Test", "n": "Explain the Esquite Tatemado.", "d": "Served in a roasted corn husk, it's the Corazon spin on the Mexican Elote snack. Our fire roasted corn, Mexican crema, peppers and three cheese blend takes this favorite to a new level."},
+    {"c": "First Serving Test", "n": "Explain the Roasted Brussels.", "d": "Fresh Brussels oven baked then tossed in our Agave Vinaigrette. It's the perfect combination of sweet, spicy, & savory"},
+    {"c": "First Serving Test", "n": "Name 7 of the 16 ingredients found in our Mole", "d": "Adobe Peppers\nBlack sesame seeds\nWhite sesame seeds\nMexican chocolate\nGarlic\nOnion\nChicken Bouillon"},
+    {"c": "First Serving Test", "n": "What can cut down on the earthiness of the Mole?", "d": "Salt"},
+    {"c": "First Serving Test", "n": "What paste is used for the Creamy Chorizo Sauce and where is it from?", "d": "Hanssa Paste, Africa"},
+    {"c": "First Serving Test", "n": "What does Borracho mean?", "d": "Drunk"},
+    {"c": "First Serving Test", "n": "What vegetables are in the Corn Succotash?", "d": "Fire roasted corn, red onion, Mexican zucchini, pepper, red & orange bell peppers, jalapeños"},
+    {"c": "First Serving Test", "n": "Describe the Creamy Poblano Rice.", "d": "A creamy Mexican risotto with Poblano peppers"},
+    {"c": "First Serving Test", "n": "What is one thing that makes our Mexican rice different from other Mexican restaurants?", "d": "We use fresh tomatoes"},
+    {"c": "First Serving Test", "n": "Name all of the ingredients in the Yellowfin Tuna Tiradito.", "d": "Tuna, Avocado, Citrus, Soy, Baby Greens"},
+    {"c": "First Serving Test", "n": "What's the difference between our Ceviche and other ceviches?", "d": "Instead of boiled shrimp, we use a high quality Sea Bass and instead of a solely citrus based sauce, we use Tiger Milk."},
+    {"c": "First Serving Test", "n": "What sauce comes on the Papas Adobadas?", "d": "Smoked Adobo Sauce"},
+    {"c": "First Serving Test", "n": "Name the vegetables that come on the Grilled Panela Cheese.", "d": "Fresh respect & green tomatoes, jalapeños, avocado, & cilantro"},
+    {"c": "First Serving Test", "n": "What is a Pepita?", "d": "Green, edible kernels of specific pumpkin varieties"},
+    {"c": "First Serving Test", "n": "What is the vibrant green sauce on the Green Spaghetti made from?", "d": "Roasted Poblano Peppers"}
+  ];
 
   const signoffs = [
     ['opening','Opening / Pre-Shift'],['greeting','Greeting & Guest Flow'],['resy','Resy / Reservations'],['walkins','Walk-Ins'],['onehost','One-Host Seating'],['twohost','Two-Host Seating'],['rotation','Server Rotation'],['menu','Menu Knowledge'],['closing','Closing']
@@ -1078,14 +815,22 @@ Chicken Bouillon"
 
   // Study
   let filteredCards=[]; let cardIndex=0; let quiz=[]; let quizIndex=0; let quizScore=0; let quizMissed=[]; let quizLocked=false;
-  const categories=['All',...Array.from(new Set(menuCards.map(x=>x.c)))];
+  const deckFilter=document.getElementById('deckFilter');
   const categoryFilter=document.getElementById('categoryFilter');
-  categoryFilter.innerHTML=categories.map(c=>`<option>${escapeHTML(c)}</option>`).join('');
-  document.getElementById('deckCountPill').textContent=`${menuCards.length} cards`;
-  function cardKey(card){return card.c+'|'+card.n;}
+  function activeDeck(){return deckFilter.value==='serving'?servingTestCards:menuCards;}
+  function activeDeckId(){return deckFilter.value==='serving'?'serving':'menu';}
+  function rebuildCategories(){
+    const deck=activeDeck();
+    const categories=['All',...Array.from(new Set(deck.map(x=>x.c)))];
+    categoryFilter.innerHTML=categories.map(c=>`<option>${escapeHTML(c)}</option>`).join('');
+    categoryFilter.value='All';
+    document.getElementById('deckCountPill').textContent=`${deck.length} cards`;
+  }
+  function cardKey(card){return activeDeckId()+'|'+card.c+'|'+card.n;}
   function refreshFiltered(){
+    const deck=activeDeck();
     const cat=categoryFilter.value||'All', missedOnly=document.getElementById('missedOnly').checked;
-    filteredCards=menuCards.filter(c=>(cat==='All'||c.c===cat)&&(!missedOnly||state.study.missed[cardKey(c)]));
+    filteredCards=deck.filter(c=>(cat==='All'||c.c===cat)&&(!missedOnly||state.study.missed[cardKey(c)]));
     if(!filteredCards.length && missedOnly){filteredCards=[];} if(cardIndex>=filteredCards.length)cardIndex=0;renderCard();renderMastery();
   }
   function renderCard(){
@@ -1099,28 +844,37 @@ Chicken Bouillon"
   document.getElementById('prevCardBtn').addEventListener('click',()=>stepCard(-1));
   document.getElementById('masteredBtn').addEventListener('click',()=>{if(!filteredCards.length)return;const k=cardKey(filteredCards[cardIndex]);state.study.mastered[k]=true;delete state.study.missed[k];save();stepCard(1);});
   document.getElementById('needsWorkBtn').addEventListener('click',()=>{if(!filteredCards.length)return;const k=cardKey(filteredCards[cardIndex]);state.study.missed[k]=true;delete state.study.mastered[k];save();stepCard(1);});
+  deckFilter.addEventListener('change',()=>{cardIndex=0;document.getElementById('missedOnly').checked=false;rebuildCategories();refreshFiltered();if(document.getElementById('studyQuiz').style.display!=='none')beginQuiz();if(document.getElementById('studyMastery').style.display!=='none')renderMastery();toast(deckFilter.value==='serving'?'First Serving Test loaded':'Menu Flashcards loaded');});
   categoryFilter.addEventListener('change',()=>{cardIndex=0;refreshFiltered()});
   document.getElementById('missedOnly').addEventListener('change',()=>{cardIndex=0;refreshFiltered()});
   document.getElementById('shuffleBtn').addEventListener('click',()=>{filteredCards.sort(()=>Math.random()-.5);cardIndex=0;renderCard();toast('Deck shuffled');});
-  document.getElementById('resetMasteryBtn').addEventListener('click',()=>{if(confirm('Reset mastered cards, missed cards, and quiz scores?')){state.study={mastered:{},missed:{},scores:[]};save();refreshFiltered();toast('Study progress reset');}});
+  document.getElementById('resetMasteryBtn').addEventListener('click',()=>{if(confirm('Reset mastered cards, missed cards, and quiz scores for both flashcard sets?')){state.study={mastered:{},missed:{},scores:[]};save();refreshFiltered();toast('Study progress reset');}});
 
   function randomSample(arr,n){const copy=[...arr];for(let i=copy.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[copy[i],copy[j]]=[copy[j],copy[i]];}return copy.slice(0,n);}
   function beginQuiz(){
-    let pool=filteredCards.length>=4?filteredCards:menuCards.filter(c=>(categoryFilter.value==='All'||c.c===categoryFilter.value));
-    if(pool.length<4){pool=menuCards;}
+    const deck=activeDeck();
+    let pool=filteredCards.length>=4?filteredCards:deck.filter(c=>(categoryFilter.value==='All'||c.c===categoryFilter.value));
+    if(pool.length<4){pool=deck;}
     quiz=randomSample(pool,Math.min(10,pool.length));quizIndex=0;quizScore=0;quizMissed=[];quizLocked=false;renderQuizQuestion();
   }
   function renderQuizQuestion(){
     const box=document.getElementById('quizBox');
+    const deck=activeDeck();
+    const deckId=activeDeckId();
     if(quizIndex>=quiz.length){
-      state.study.scores.unshift({date:new Date().toLocaleDateString(),score:quizScore,total:quiz.length});state.study.scores=state.study.scores.slice(0,10);save();
+      state.study.scores.unshift({date:new Date().toLocaleDateString(),score:quizScore,total:quiz.length,deck:deckId});state.study.scores=state.study.scores.slice(0,20);save();
       box.innerHTML=`<div class="score-card"><div class="eyebrow">Quiz Complete</div><div class="big-score">${quizScore}/${quiz.length}</div><p>${quizMissed.length?`${quizMissed.length} card${quizMissed.length===1?' needs':'s need'} another look.`:'Perfect score. Nice.'}</p><button class="btn" id="quizAgain">Take another quiz</button></div>`;
       document.getElementById('quizAgain').addEventListener('click',beginQuiz);renderMastery();return;
     }
-    const card=quiz[quizIndex]; const samePool=menuCards.filter(x=>x!==card && (categoryFilter.value==='All'||x.c===categoryFilter.value));
-    let distractors=randomSample(samePool,3); if(distractors.length<3)distractors=randomSample(menuCards.filter(x=>x!==card),3);
+    const card=quiz[quizIndex];
+    const samePool=deck.filter(x=>x!==card && (categoryFilter.value==='All'||x.c===categoryFilter.value));
+    let distractors=randomSample(samePool,3); if(distractors.length<3)distractors=randomSample(deck.filter(x=>x!==card),3);
     const answers=randomSample([card,...distractors],4);
-    box.innerHTML=`<div class="pill">Question ${quizIndex+1} of ${quiz.length}</div><div class="question">Which menu item matches this description?<br><span style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:17px;color:var(--muted);font-weight:500">${escapeHTML(card.d)}</span></div><div class="quiz-answers">${answers.map((a,i)=>`<button class="quiz-answer" data-key="${escapeHTML(cardKey(a))}">${escapeHTML(a.n)}</button>`).join('')}</div><div class="button-row" id="quizNextRow" style="display:none"><button class="btn" id="quizNextBtn">${quizIndex===quiz.length-1?'See score':'Next question'}</button></div>`;
+    if(deckId==='serving'){
+      box.innerHTML=`<div class="pill">Question ${quizIndex+1} of ${quiz.length}</div><div class="question">${escapeHTML(card.n)}</div><div class="quiz-answers">${answers.map(a=>`<button class="quiz-answer" data-key="${escapeHTML(cardKey(a))}">${escapeHTML(a.d)}</button>`).join('')}</div><div class="button-row" id="quizNextRow" style="display:none"><button class="btn" id="quizNextBtn">${quizIndex===quiz.length-1?'See score':'Next question'}</button></div>`;
+    } else {
+      box.innerHTML=`<div class="pill">Question ${quizIndex+1} of ${quiz.length}</div><div class="question">Which menu item matches this description?<br><span style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:17px;color:var(--muted);font-weight:500">${escapeHTML(card.d)}</span></div><div class="quiz-answers">${answers.map(a=>`<button class="quiz-answer" data-key="${escapeHTML(cardKey(a))}">${escapeHTML(a.n)}</button>`).join('')}</div><div class="button-row" id="quizNextRow" style="display:none"><button class="btn" id="quizNextBtn">${quizIndex===quiz.length-1?'See score':'Next question'}</button></div>`;
+    }
     quizLocked=false;
     box.querySelectorAll('.quiz-answer').forEach(b=>b.addEventListener('click',()=>{
       if(quizLocked)return;quizLocked=true;const isCorrect=b.dataset.key===cardKey(card);
@@ -1130,9 +884,11 @@ Chicken Bouillon"
     }));
   }
   function renderMastery(){
-    const mastered=menuCards.filter(c=>state.study.mastered[cardKey(c)]).length, missed=menuCards.filter(c=>state.study.missed[cardKey(c)]).length;
-    const latest=state.study.scores[0];document.getElementById('masterySummary').textContent=`${mastered} mastered · ${missed} marked needs work${latest?` · Last quiz ${latest.score}/${latest.total}`:''}`;
-    document.getElementById('masteryGrid').innerHTML=menuCards.map(c=>`<div class="master-item ${state.study.mastered[cardKey(c)]?'done':''}"><span class="dot"></span><div><strong>${escapeHTML(c.n)}</strong><div class="tiny">${escapeHTML(c.c)}${state.study.missed[cardKey(c)]?' · Needs work':''}</div></div></div>`).join('');
+    const deck=activeDeck();
+    const deckId=activeDeckId();
+    const mastered=deck.filter(c=>state.study.mastered[cardKey(c)]).length, missed=deck.filter(c=>state.study.missed[cardKey(c)]).length;
+    const latest=state.study.scores.find(s=>(s.deck||'menu')===deckId);document.getElementById('masterySummary').textContent=`${mastered} mastered · ${missed} marked needs work${latest?` · Last quiz ${latest.score}/${latest.total}`:''}`;
+    document.getElementById('masteryGrid').innerHTML=deck.map(c=>`<div class="master-item ${state.study.mastered[cardKey(c)]?'done':''}"><span class="dot"></span><div><strong>${escapeHTML(c.n)}</strong><div class="tiny">${escapeHTML(c.c)}${state.study.missed[cardKey(c)]?' · Needs work':''}</div></div></div>`).join('');
   }
   document.querySelectorAll('[data-study]').forEach(btn=>btn.addEventListener('click',()=>{
     document.querySelectorAll('[data-study]').forEach(x=>x.classList.toggle('active',x===btn));
@@ -1169,7 +925,7 @@ Chicken Bouillon"
   document.getElementById('clearAllBtn').addEventListener('click',()=>{if(confirm('Clear ALL saved checklists, rotation history, study progress, and trainee records on this iPad?')){localStorage.removeItem(APP_KEY);location.reload();}});
 
   // Initial render
-  renderChecklists();renderTraining();renderRotation();refreshFiltered();renderTrainer();
+  renderChecklists();renderTraining();renderRotation();rebuildCategories();refreshFiltered();renderTrainer();
 })();
 </script>
 </body>
