@@ -1,0 +1,1176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="theme-color" content="#6f2636" />
+  <title>Corazón Host Hub</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2220%22 fill=%22%236f2636%22/><text x=%2250%22 y=%2268%22 text-anchor=%22middle%22 font-size=%2264%22 fill=%22%23f7efe3%22>♥</text></svg>">
+  <style>
+    :root{
+      --cream:#f7efe3;
+      --paper:#fffaf3;
+      --ink:#342722;
+      --muted:#7d6d63;
+      --wine:#6f2636;
+      --wine-dark:#4f1825;
+      --terracotta:#b85d43;
+      --sage:#7f8f73;
+      --gold:#bf9850;
+      --line:#e1d3c3;
+      --soft:#efe2d3;
+      --shadow:0 10px 30px rgba(73,43,31,.11);
+      --radius:22px;
+    }
+    *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+      background:
+        radial-gradient(circle at 8% 0%, rgba(184,93,67,.08), transparent 22rem),
+        radial-gradient(circle at 95% 15%, rgba(127,143,115,.09), transparent 26rem),
+        var(--cream);
+      color:var(--ink);
+      min-height:100vh;
+      padding-bottom:calc(94px + env(safe-area-inset-bottom));
+    }
+    button,input,textarea,select{font:inherit}
+    button{cursor:pointer}
+    .app-header{
+      position:sticky;top:0;z-index:20;
+      background:rgba(247,239,227,.92);
+      backdrop-filter:blur(14px);
+      border-bottom:1px solid rgba(111,38,54,.08);
+      padding:calc(12px + env(safe-area-inset-top)) 22px 12px;
+    }
+    .header-row{max-width:1180px;margin:auto;display:flex;align-items:center;gap:14px}
+    .mark{width:48px;height:48px;border-radius:16px;background:var(--wine);color:var(--cream);display:grid;place-items:center;font-size:26px;box-shadow:var(--shadow);flex:none}
+    .brand{min-width:0;flex:1}
+    .brand h1{margin:0;font-family:Georgia,"Times New Roman",serif;font-size:25px;letter-spacing:.02em;color:var(--wine-dark)}
+    .brand p{margin:3px 0 0;color:var(--muted);font-size:13px}
+    .icon-btn{border:1px solid var(--line);background:var(--paper);width:44px;height:44px;border-radius:14px;color:var(--wine);font-size:20px}
+    main{max-width:1180px;margin:0 auto;padding:22px}
+    .view{display:none;animation:fade .2s ease}
+    .view.active{display:block}
+    @keyframes fade{from{opacity:.2;transform:translateY(4px)}to{opacity:1;transform:none}}
+    .hero-small{display:flex;justify-content:space-between;align-items:flex-end;gap:18px;margin:5px 0 20px}
+    .eyebrow{text-transform:uppercase;letter-spacing:.14em;color:var(--terracotta);font-weight:800;font-size:11px;margin-bottom:6px}
+    h2,h3,h4{font-family:Georgia,"Times New Roman",serif;color:var(--wine-dark)}
+    h2{font-size:31px;margin:0 0 5px}
+    h3{font-size:22px;margin:0 0 12px}
+    h4{font-size:18px;margin:0 0 8px}
+    p{line-height:1.55}
+    .subtle{color:var(--muted);font-size:14px;margin:0}
+    .grid-2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+    .grid-3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+    .card{background:rgba(255,250,243,.93);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:20px}
+    .section-space{margin-top:18px}
+    .pill{display:inline-flex;align-items:center;gap:7px;padding:7px 11px;border-radius:999px;background:var(--soft);color:var(--wine-dark);font-weight:700;font-size:12px}
+    .progress{height:9px;border-radius:999px;background:#eaded0;overflow:hidden;margin-top:10px}
+    .progress > div{height:100%;background:var(--sage);width:0;transition:width .2s ease}
+    .checklist{display:grid;gap:10px;margin-top:14px}
+    .check-row{display:flex;gap:12px;align-items:flex-start;padding:14px;border:1px solid var(--line);border-radius:16px;background:#fffdf8;transition:.2s}
+    .check-row.done{opacity:.48;background:#f0ece5}
+    .check-row input{width:24px;height:24px;accent-color:var(--sage);flex:none;margin-top:1px}
+    .check-row label{font-size:15px;line-height:1.4;flex:1}
+    .button-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+    .btn{border:0;border-radius:14px;padding:12px 16px;font-weight:800;background:var(--wine);color:white;box-shadow:0 6px 14px rgba(111,38,54,.16)}
+    .btn.secondary{background:var(--paper);color:var(--wine);border:1px solid var(--line);box-shadow:none}
+    .btn.terracotta{background:var(--terracotta)}
+    .btn.sage{background:var(--sage)}
+    .btn.small{padding:9px 12px;border-radius:12px;font-size:13px}
+    .btn.danger{background:#8b2f2f}
+    .split-title{display:flex;align-items:center;justify-content:space-between;gap:12px}
+    .handbook-nav{display:flex;gap:8px;overflow:auto;padding-bottom:8px;margin-bottom:14px;scrollbar-width:none}
+    .handbook-nav::-webkit-scrollbar{display:none}
+    .chip{white-space:nowrap;border:1px solid var(--line);background:var(--paper);padding:10px 13px;border-radius:999px;color:var(--wine-dark);font-weight:700}
+    .chip.active{background:var(--wine);color:white;border-color:var(--wine)}
+    .steps{counter-reset:step;display:grid;gap:10px}
+    .step{display:flex;gap:12px;line-height:1.45;padding:10px 0;border-bottom:1px dashed var(--line)}
+    .step:last-child{border-bottom:0}
+    .num{width:28px;height:28px;border-radius:50%;background:var(--soft);color:var(--wine);display:grid;place-items:center;font-weight:900;flex:none}
+    .quote{background:#f2e4d6;border-left:4px solid var(--terracotta);border-radius:0 14px 14px 0;padding:13px 15px;font-weight:700;color:var(--wine-dark)}
+    .note{background:#edf0e9;border:1px solid #d7dfd1;padding:13px 15px;border-radius:14px;color:#46513f;font-size:14px}
+    .training-card{position:relative}
+    .module-done{position:absolute;right:15px;top:15px;font-size:12px;font-weight:800;color:var(--sage)}
+    .module-list{display:grid;gap:12px}
+    .module{border:1px solid var(--line);border-radius:18px;background:#fffdf8;overflow:hidden}
+    .module button.module-head{width:100%;border:0;background:transparent;text-align:left;padding:16px 17px;display:flex;align-items:center;gap:12px;color:var(--ink)}
+    .module-head strong{flex:1}
+    .module-body{display:none;padding:0 17px 17px;border-top:1px solid var(--line)}
+    .module.open .module-body{display:block}
+    .knowledge{margin-top:12px;border-top:1px solid var(--line);padding-top:12px}
+    .knowledge label{display:block;font-weight:800;margin-bottom:8px}
+    .knowledge .answers{display:grid;gap:7px}
+    .answer-btn{border:1px solid var(--line);background:var(--paper);padding:10px;border-radius:12px;text-align:left}
+    .answer-btn.correct{border-color:var(--sage);background:#edf0e9}
+    .answer-btn.wrong{border-color:#c7756b;background:#f9e7e3}
+    .rotation-layout{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(330px,.85fr);gap:18px}
+    .setup-row{display:flex;gap:9px;margin-top:12px}
+    input,textarea,select{border:1px solid var(--line);background:#fffdf8;border-radius:13px;padding:12px;color:var(--ink);outline:none}
+    input:focus,textarea:focus,select:focus{border-color:var(--terracotta);box-shadow:0 0 0 3px rgba(184,93,67,.11)}
+    .setup-row input{flex:1;min-width:0}
+    .server-list{display:grid;gap:9px;margin-top:14px}
+    .server{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;border:1px solid var(--line);border-radius:16px;padding:11px;background:#fffdf8}
+    .server.current{border:2px solid var(--wine);background:#fff7f5;box-shadow:0 5px 15px rgba(111,38,54,.09)}
+    .server .badge{width:34px;height:34px;border-radius:12px;background:var(--soft);display:grid;place-items:center;font-weight:900;color:var(--wine)}
+    .server.current .badge{background:var(--wine);color:white}
+    .server-name{font-weight:900}
+    .server-stats{font-size:12px;color:var(--muted);margin-top:2px}
+    .server-actions{display:flex;gap:5px}
+    .mini{border:1px solid var(--line);background:var(--paper);border-radius:10px;width:34px;height:34px;color:var(--wine);font-weight:900}
+    .seat-panel{position:sticky;top:93px}
+    .current-server{font-family:Georgia,"Times New Roman",serif;font-size:35px;color:var(--wine);margin:6px 0 15px;line-height:1}
+    .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .form-grid label{font-size:12px;font-weight:900;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+    .field{display:grid;gap:6px}
+    .history{margin-top:18px;display:grid;gap:8px}
+    .history-row{display:grid;grid-template-columns:70px 1fr 75px 66px auto;gap:8px;align-items:center;padding:10px 12px;border:1px solid var(--line);border-radius:14px;background:#fffdf8;font-size:13px}
+    .history-row.skip{opacity:.6}
+    .history-row strong{color:var(--wine-dark)}
+    .empty{text-align:center;color:var(--muted);padding:25px 10px;border:1px dashed var(--line);border-radius:16px}
+    .study-toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:14px}
+    .study-toolbar select{min-width:170px}
+    .mode-tabs{display:flex;gap:8px;margin-bottom:16px}
+    .flash-wrap{perspective:1100px;max-width:760px;margin:0 auto}
+    .flashcard{min-height:360px;position:relative;transform-style:preserve-3d;transition:transform .45s;cursor:pointer}
+    .flashcard.flipped{transform:rotateY(180deg)}
+    .flash-face{position:absolute;inset:0;backface-visibility:hidden;border:1px solid var(--line);background:#fffdf8;border-radius:28px;box-shadow:var(--shadow);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:34px;text-align:center}
+    .flash-face.back{transform:rotateY(180deg);background:#fff9f4}
+    .flash-face .cat{font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.15em;color:var(--terracotta);margin-bottom:14px}
+    .flash-face h3{font-size:34px;margin:0;max-width:90%}
+    .flash-face p{font-size:18px;max-width:90%;color:#51433d}
+    .flip-hint{font-size:12px;color:var(--muted);margin-top:18px}
+    .flash-actions{display:flex;justify-content:center;flex-wrap:wrap;gap:9px;margin-top:14px}
+    .flash-counter{text-align:center;color:var(--muted);font-size:13px;margin-top:10px}
+    .quiz-box{max-width:760px;margin:auto}
+    .question{font-family:Georgia,"Times New Roman",serif;font-size:26px;color:var(--wine-dark);margin:8px 0 18px}
+    .quiz-answers{display:grid;gap:10px}
+    .quiz-answer{border:1px solid var(--line);background:#fffdf8;text-align:left;padding:15px;border-radius:15px;font-weight:700;color:var(--ink)}
+    .quiz-answer.correct{background:#edf0e9;border-color:#91a484}
+    .quiz-answer.wrong{background:#f9e7e3;border-color:#c7756b}
+    .score-card{text-align:center;padding:25px}
+    .big-score{font-family:Georgia,"Times New Roman",serif;font-size:54px;color:var(--wine);margin:6px 0}
+    .mastery-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:14px}
+    .master-item{padding:12px;border:1px solid var(--line);border-radius:14px;background:#fffdf8;display:flex;align-items:center;gap:10px}
+    .dot{width:10px;height:10px;border-radius:50%;background:var(--terracotta);flex:none}
+    .master-item.done .dot{background:var(--sage)}
+    .trainer-layout{display:grid;grid-template-columns:320px 1fr;gap:18px}
+    .trainee-list{display:grid;gap:8px;margin-top:12px}
+    .trainee-btn{border:1px solid var(--line);background:#fffdf8;border-radius:14px;padding:12px;text-align:left;display:flex;justify-content:space-between;gap:8px;align-items:center}
+    .trainee-btn.active{border:2px solid var(--wine);background:#fff7f5}
+    .trainee-btn strong{color:var(--wine-dark)}
+    .signoff-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:14px 0}
+    .signoff{display:flex;align-items:center;gap:10px;border:1px solid var(--line);background:#fffdf8;border-radius:14px;padding:12px}
+    .signoff input{width:22px;height:22px;accent-color:var(--sage)}
+    .signoff label{font-weight:700}
+    textarea{width:100%;min-height:130px;resize:vertical}
+    .bottom-nav{position:fixed;z-index:25;left:50%;transform:translateX(-50%);bottom:calc(10px + env(safe-area-inset-bottom));width:min(720px,calc(100% - 20px));display:grid;grid-template-columns:repeat(5,1fr);gap:6px;padding:7px;border:1px solid rgba(111,38,54,.12);background:rgba(255,250,243,.94);backdrop-filter:blur(14px);border-radius:22px;box-shadow:0 14px 40px rgba(66,38,28,.18)}
+    .nav-btn{border:0;background:transparent;color:var(--muted);border-radius:16px;padding:9px 5px 8px;display:grid;place-items:center;gap:3px;font-size:11px;font-weight:800}
+    .nav-btn span:first-child{font-size:20px}
+    .nav-btn.active{background:var(--wine);color:white}
+    .modal{position:fixed;inset:0;z-index:50;background:rgba(41,27,23,.48);display:none;align-items:center;justify-content:center;padding:20px}
+    .modal.open{display:flex}
+    .modal-card{background:var(--paper);border-radius:24px;max-width:650px;width:100%;max-height:88vh;overflow:auto;padding:22px;box-shadow:0 25px 80px rgba(0,0,0,.24)}
+    .modal-head{display:flex;justify-content:space-between;align-items:center;gap:12px}
+    .close{border:0;background:var(--soft);width:38px;height:38px;border-radius:12px;font-size:22px;color:var(--wine)}
+    .divider{height:1px;background:var(--line);margin:18px 0}
+    .tiny{font-size:12px;color:var(--muted)}
+    .toast{position:fixed;z-index:100;left:50%;transform:translateX(-50%) translateY(20px);bottom:110px;background:var(--wine-dark);color:white;padding:11px 16px;border-radius:999px;opacity:0;pointer-events:none;transition:.2s;font-weight:800;font-size:13px;box-shadow:var(--shadow)}
+    .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+    .source-note{margin-top:18px;font-size:12px;color:var(--muted);text-align:center}
+    @media(max-width:850px){
+      .rotation-layout,.trainer-layout{grid-template-columns:1fr}
+      .seat-panel{position:static}
+      .grid-3{grid-template-columns:1fr}
+    }
+    @media(max-width:650px){
+      main{padding:16px}
+      .grid-2,.mastery-grid,.signoff-grid{grid-template-columns:1fr}
+      h2{font-size:27px}.hero-small{align-items:flex-start;flex-direction:column}
+      .history-row{grid-template-columns:58px 1fr 50px 44px auto;font-size:12px;padding:9px}
+      .flashcard{min-height:390px}.flash-face{padding:24px}.flash-face h3{font-size:29px}.flash-face p{font-size:17px}
+      .brand p{display:none}.brand h1{font-size:21px}.mark{width:42px;height:42px}
+      .form-grid{grid-template-columns:1fr}
+    }
+    @media print{
+      .bottom-nav,.app-header,.button-row,.icon-btn,.study-toolbar,.mode-tabs{display:none!important}
+      body{background:white;padding:0}.view{display:none!important}#handbook.view{display:block!important}main{max-width:none;padding:0}.card{box-shadow:none;break-inside:avoid}
+    }
+  </style>
+</head>
+<body>
+  <header class="app-header">
+    <div class="header-row">
+      <div class="mark">♥</div>
+      <div class="brand">
+        <h1>Corazón Host Hub</h1>
+        <p>Hot Springs, Arkansas · Host training & floor tools</p>
+      </div>
+      <button class="icon-btn" id="settingsBtn" aria-label="Settings">⚙︎</button>
+    </div>
+  </header>
+
+  <main>
+    <!-- CHECKLISTS -->
+    <section class="view active" id="checklists">
+      <div class="hero-small">
+        <div><div class="eyebrow">Daily Shift Tools</div><h2>Opening & Closing</h2><p class="subtle">Tap each task as you finish it. Checklists reset automatically on a new calendar day.</p></div>
+        <span class="pill" id="todayPill">Today</span>
+      </div>
+      <div class="grid-2">
+        <div class="card">
+          <div class="split-title"><div><h3>Opening Checklist</h3><p class="subtle" id="openCount"></p></div><span class="pill">Pre-shift</span></div>
+          <div class="progress"><div id="openProgress"></div></div>
+          <div class="checklist" id="openingChecklist"></div>
+          <div class="button-row"><button class="btn secondary small" onclick="resetChecklist('opening')">Reset opening</button></div>
+        </div>
+        <div class="card">
+          <div class="split-title"><div><h3>Closing Checklist</h3><p class="subtle" id="closeCount"></p></div><span class="pill">Post-shift</span></div>
+          <div class="progress"><div id="closeProgress"></div></div>
+          <div class="checklist" id="closingChecklist"></div>
+          <div class="button-row"><button class="btn secondary small" onclick="resetChecklist('closing')">Reset closing</button></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- HANDBOOK -->
+    <section class="view" id="handbook">
+      <div class="hero-small">
+        <div><div class="eyebrow">Reference</div><h2>Host Handbook</h2><p class="subtle">The procedures from the host sheet, reorganized for quick iPad reference.</p></div>
+        <button class="btn secondary" onclick="window.print()">Print handbook</button>
+      </div>
+      <div class="handbook-nav" id="handbookNav">
+        <button class="chip active" data-anchor="hb-preshift">Pre-Shift</button>
+        <button class="chip" data-anchor="hb-during">During Shift</button>
+        <button class="chip" data-anchor="hb-seat">How to Seat</button>
+        <button class="chip" data-anchor="hb-rotate">Rotation</button>
+        <button class="chip" data-anchor="hb-post">Post-Shift</button>
+        <button class="chip" data-anchor="hb-training">Training Pack</button>
+      </div>
+
+      <div class="card" id="hb-preshift">
+        <h3>Pre-Shift</h3>
+        <div class="steps" id="preShiftSteps"></div>
+      </div>
+
+      <div class="card section-space" id="hb-during">
+        <h3>During the Shift</h3>
+        <div class="grid-3">
+          <div><span class="pill">01</span><h4 style="margin-top:10px">Answer the phone</h4><p class="subtle">Stay available for incoming calls while keeping the host stand covered.</p></div>
+          <div><span class="pill">02</span><h4 style="margin-top:10px">Place reservations</h4><p class="subtle">Enter and update reservations in ResyOS according to the restaurant’s normal reservation procedure.</p></div>
+          <div><span class="pill">03</span><h4 style="margin-top:10px">Seat tables</h4><p class="subtle">Follow the correct one-host or two-host seating flow below and keep the server rotation moving.</p></div>
+        </div>
+      </div>
+
+      <div class="section-space" id="hb-seat">
+        <div class="grid-2">
+          <div class="card">
+            <div class="split-title"><h3>If There Are Two Hosts</h3><span class="pill">2 Hosts</span></div>
+            <div class="steps" id="twoHostSteps"></div>
+          </div>
+          <div class="card">
+            <div class="split-title"><h3>If There Is One Host</h3><span class="pill">1 Host</span></div>
+            <div class="steps" id="oneHostSteps"></div>
+            <div class="quote section-space">“Miss Ashley, the party for [LAST NAME] of [NUMBER OF PEOPLE] has arrived for table [NUMBER].”</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card section-space" id="hb-rotate">
+        <h3>How to Rotate</h3>
+        <div class="steps" id="rotationSteps"></div>
+        <div class="note section-space"><strong>Important:</strong> Do not change the rotation based on how many covers each server has received. The rotation is inherently fair, not equal.</div>
+        <div class="note section-space"><strong>If a server asks to be skipped:</strong> mark the skip and move to the next server. The Rotation tool in this app has a “Skip this turn” button for exactly that.</div>
+      </div>
+
+      <div class="card section-space" id="hb-post">
+        <h3>Post-Shift</h3>
+        <div class="steps" id="postShiftSteps"></div>
+      </div>
+
+      <div class="card section-space training-card" id="hb-training">
+        <h3>Host Training Pack</h3>
+        <p class="subtle">Work through each section. Completion is stored only on this iPad.</p>
+        <div class="progress"><div id="trainingProgress"></div></div>
+        <p class="subtle" id="trainingCount" style="margin:8px 0 14px"></p>
+        <div class="module-list" id="trainingModules"></div>
+      </div>
+    </section>
+
+    <!-- ROTATION -->
+    <section class="view" id="rotation">
+      <div class="hero-small">
+        <div><div class="eyebrow">Floor Tool</div><h2>Server Rotation</h2><p class="subtle">Tracks order, parties and covers without changing the rotation based on cover count.</p></div>
+        <button class="btn secondary" onclick="resetRotation()">Start new shift</button>
+      </div>
+      <div class="rotation-layout">
+        <div>
+          <div class="card">
+            <div class="split-title"><div><h3>Rotation Order</h3><p class="subtle">Add servers in the order they should receive tables. Use arrows to adjust the lineup before service.</p></div><span class="pill" id="serverCountPill">0 servers</span></div>
+            <div class="setup-row"><input id="serverNameInput" type="text" autocomplete="off" placeholder="Server name"><button class="btn" id="addServerBtn">Add</button></div>
+            <div class="server-list" id="serverList"></div>
+            <div class="note section-space">The cover counts shown here are informational only. Do not use them to rebalance the rotation.</div>
+          </div>
+
+          <div class="card section-space">
+            <div class="split-title"><div><h3>Seating History</h3><p class="subtle">Newest entry appears first.</p></div><button class="btn secondary small" id="undoBtn">Undo last</button></div>
+            <div class="history" id="historyList"></div>
+          </div>
+        </div>
+
+        <aside class="card seat-panel">
+          <div class="eyebrow">Up Next</div>
+          <div class="current-server" id="currentServer">Add servers</div>
+          <div class="form-grid">
+            <div class="field"><label for="tableInput">Table</label><input id="tableInput" inputmode="numeric" placeholder="e.g. 14"></div>
+            <div class="field"><label for="partyInput">Party Size</label><input id="partyInput" inputmode="numeric" type="number" min="1" max="30" placeholder="e.g. 4"></div>
+          </div>
+          <div class="button-row">
+            <button class="btn sage" id="seatBtn">Seat current server</button>
+            <button class="btn terracotta" id="skipBtn">Skip this turn</button>
+          </div>
+          <p class="tiny">A skip advances the rotation but does not add covers or a table.</p>
+        </aside>
+      </div>
+    </section>
+
+    <!-- FLASHCARDS -->
+    <section class="view" id="flashcards">
+      <div class="hero-small">
+        <div><div class="eyebrow">Menu University</div><h2>Menu Flashcards</h2><p class="subtle">Free, local study tools: flashcards, quizzes, missed-only practice and mastery tracking.</p></div>
+        <span class="pill" id="deckCountPill">0 cards</span>
+      </div>
+      <div class="card">
+        <div class="study-toolbar">
+          <select id="categoryFilter"></select>
+          <label class="pill"><input type="checkbox" id="missedOnly" style="accent-color:var(--wine)"> Missed only</label>
+          <button class="btn secondary small" id="shuffleBtn">Shuffle</button>
+          <button class="btn secondary small" id="resetMasteryBtn">Reset study progress</button>
+        </div>
+        <div class="mode-tabs">
+          <button class="chip active" data-study="cards">Flashcards</button>
+          <button class="chip" data-study="quiz">10-Question Quiz</button>
+          <button class="chip" data-study="mastery">Mastery</button>
+        </div>
+
+        <div id="studyCards">
+          <div class="flash-wrap">
+            <div class="flashcard" id="flashcard">
+              <div class="flash-face front"><div class="cat" id="cardCategory"></div><h3 id="cardFront"></h3><div class="flip-hint">Tap card to flip</div></div>
+              <div class="flash-face back"><div class="cat">What’s in it?</div><p id="cardBack"></p><div class="flip-hint">Tap card to flip back</div></div>
+            </div>
+          </div>
+          <div class="flash-actions">
+            <button class="btn secondary" id="prevCardBtn">← Previous</button>
+            <button class="btn terracotta" id="needsWorkBtn">Needs work</button>
+            <button class="btn sage" id="masteredBtn">Mastered ✓</button>
+            <button class="btn secondary" id="nextCardBtn">Next →</button>
+          </div>
+          <div class="flash-counter" id="flashCounter"></div>
+        </div>
+
+        <div id="studyQuiz" style="display:none">
+          <div class="quiz-box" id="quizBox"></div>
+        </div>
+        <div id="studyMastery" style="display:none">
+          <div class="split-title"><div><h3>Mastery Overview</h3><p class="subtle" id="masterySummary"></p></div></div>
+          <div class="mastery-grid" id="masteryGrid"></div>
+        </div>
+        <div class="source-note">Menu deck built from Corazón’s official online menu. Menu items can change—verify anything operational against the current restaurant menu.</div>
+      </div>
+    </section>
+
+    <!-- TRAINER -->
+    <section class="view" id="trainer">
+      <div class="hero-small">
+        <div><div class="eyebrow">Trainer Mode</div><h2>Trainee Sign-Off</h2><p class="subtle">Keep simple training progress and notes on this iPad—no account or database required.</p></div>
+      </div>
+      <div class="trainer-layout">
+        <div class="card">
+          <h3>Trainees</h3>
+          <div class="setup-row"><input id="traineeNameInput" placeholder="Trainee name"><button class="btn" id="addTraineeBtn">Add</button></div>
+          <div class="trainee-list" id="traineeList"></div>
+        </div>
+        <div class="card" id="trainerDetail"></div>
+      </div>
+    </section>
+  </main>
+
+  <nav class="bottom-nav" aria-label="Main navigation">
+    <button class="nav-btn active" data-view="checklists"><span>✓</span><span>Checklists</span></button>
+    <button class="nav-btn" data-view="handbook"><span>☰</span><span>Handbook</span></button>
+    <button class="nav-btn" data-view="rotation"><span>↻</span><span>Rotation</span></button>
+    <button class="nav-btn" data-view="flashcards"><span>◇</span><span>Study</span></button>
+    <button class="nav-btn" data-view="trainer"><span>★</span><span>Trainer</span></button>
+  </nav>
+
+  <div class="modal" id="settingsModal">
+    <div class="modal-card">
+      <div class="modal-head"><div><div class="eyebrow">Local Data</div><h3 style="margin:0">Backup & Settings</h3></div><button class="close" id="closeSettings">×</button></div>
+      <p class="subtle">Everything is saved in Safari on this iPad. Export a backup occasionally so progress can be restored if browser data is cleared.</p>
+      <div class="button-row"><button class="btn" id="exportBtn">Export backup</button><label class="btn secondary" for="importFile">Restore backup</label><input id="importFile" type="file" accept="application/json" hidden></div>
+      <div class="divider"></div>
+      <h4>About this build</h4>
+      <p class="tiny">Built as a single self-contained HTML file for GitHub Pages / Safari Home Screen use. Host procedures are based on the provided Corazón host sheet. Menu study cards are based on the restaurant’s official online menu as retrieved September 2026.</p>
+      <div class="divider"></div>
+      <button class="btn danger" id="clearAllBtn">Clear all saved app data</button>
+    </div>
+  </div>
+  <div class="toast" id="toast"></div>
+
+<script>
+(() => {
+  const APP_KEY = 'corazonHostHub_v1';
+  const todayKey = () => new Date().toISOString().slice(0,10);
+
+  const openingTasks = [
+    'Print the reservation report for the chef and host stand.',
+    'Inform the team of any allergies, reservation notes, or special events.',
+    'Write sticky notes for each reservation with presentation, table, party size, and notes.',
+    'Write any necessary table cards (Happy Anniversary, Happy Birthday, etc.). Suggested message: “Thank you for joining us on your special day! With love, Corazón.”',
+    'Place sticky notes on each table card with the reservation time, table number, party size, and event details.',
+    'Clean all windows.',
+    'Return missed calls.',
+    'Set up the rotation sheet or floor chart.'
+  ];
+  const closingTasks = [
+    'Wipe down the host stand.',
+    'Sweep and mop the host stand area.',
+    'Remove any personal belongings.',
+    'Empty the trash can.',
+    'Lock the door.',
+    'Turn out the lights.'
+  ];
+  const twoHost = [
+    'Greet the guest.',
+    'Ask whether they have a reservation or are walking in.',
+    'If they have a reservation, find it in Resy and mark them as either arrived or partially arrived.',
+    'If they are a walk-in, find a place for them and give them an update on any reservations coming in behind them. If there is no place available, offer the bar or add them to the waitlist.',
+    'Walk the guest to the table.',
+    'Pass out menus.',
+    'Inform the server of the table and give them the sticky note. If the server is not available, give the sticky note to the manager on duty.',
+    'Return promptly to the host stand.'
+  ];
+  const oneHost = [
+    'Greet the guest.',
+    'Ask whether they have a reservation or are walking in.',
+    'If they have a reservation, find it in Resy and mark them as either arrived or partially arrived.',
+    'If they are a walk-in, find a place for them and give them an update on any reservations coming in behind them. If there is no place available, offer the bar or add them to the waitlist.',
+    'Use the headset to call the manager on the floor. Say: “Miss Ashley, the party for [LAST NAME] of [NUMBER OF PEOPLE] has arrived for table [NUMBER].”',
+    'If you do not get confirmation within one minute, poke your head into the dining room and get confirmation.',
+    'When you hear the knock, open the door and introduce the guest.',
+    'Return promptly to the host stand.',
+    'Mark the party as seated in Resy.'
+  ];
+  const rotationInstructions = [
+    'Find the rotation tab of the spreadsheet / floor chart.',
+    'Enter the servers in the top row in the correct starting order. The original host sheet says to use arrival order and ask any doubles if they would like to be last.',
+    'As tables come in, seat according to the rotation and record which server received the table.',
+    'Record how many people are in the party and which table they are seated at.',
+    'If a server asks to be skipped, mark the skip and move to the next server.'
+  ];
+  const postShift = closingTasks;
+
+  const trainingModules = [
+    {
+      id:'opening', title:'1. Opening & Pre-Shift',
+      body:'Complete reservation prep before service: print reports, communicate allergies/notes/events, prepare sticky notes and table cards, clean windows, return missed calls, and set the rotation.',
+      q:'Which task belongs in pre-shift preparation?',
+      a:['Balance the rotation by covers','Print the reservation report','Lock the front door'], correct:1
+    },
+    {
+      id:'guest', title:'2. Greeting Reservations & Walk-Ins',
+      body:'Always greet the guest first and determine whether they have a reservation or are walking in. Reservation guests are located in Resy and marked arrived or partially arrived. Walk-ins are placed where possible while considering upcoming reservations.',
+      q:'What is the first thing you do when a guest arrives?',
+      a:['Ask their party size','Greet them','Call the manager'], correct:1
+    },
+    {
+      id:'twohost', title:'3. Seating With Two Hosts',
+      body:'One host can remain positioned at the stand while the other walks the party, passes menus, communicates the table to the server, delivers the sticky note, and returns promptly.',
+      q:'After walking the guest to the table, what should happen before returning to the host stand?',
+      a:['Pass menus and communicate the table to the server','Change the rotation based on covers','Mark every future reservation arrived'], correct:0
+    },
+    {
+      id:'onehost', title:'4. Seating With One Host',
+      body:'When working alone, use the headset and manager-floor handoff procedure so the host stand remains covered. If no confirmation comes within one minute, get confirmation from the dining room.',
+      q:'If the manager does not confirm within one minute, what should the host do?',
+      a:['Keep waiting at the door','Get confirmation from the dining room','Seat a different party first'], correct:1
+    },
+    {
+      id:'rotation', title:'5. Server Rotation',
+      body:'Follow the established server order. Record the server, table, and party size. Do not rebalance because one server has more covers; the rotation is fair, not equal. Mark a skip when requested.',
+      q:'A server has more covers than everyone else. What should you do?',
+      a:['Automatically skip them','Change the order to equalize covers','Keep following the rotation'], correct:2
+    },
+    {
+      id:'during', title:'6. During-Shift Responsibilities',
+      body:'The host’s core responsibilities during service are answering the phone, placing reservations, seating tables, keeping Resy updated, and returning promptly to the host stand.',
+      q:'Which is a core during-shift host responsibility?',
+      a:['Placing reservations','Cooking appetizers','Closing server checks'], correct:0
+    },
+    {
+      id:'menu', title:'7. Menu Knowledge',
+      body:'Use the Menu University section to learn dish names and descriptions. Mark cards “Mastered” or “Needs work,” use missed-only practice, and take 10-question quizzes until the menu feels automatic.',
+      q:'Where should a host practice dish names and ingredients in this app?',
+      a:['Rotation','Menu University','Closing Checklist'], correct:1
+    },
+    {
+      id:'closing', title:'8. Closing',
+      body:'Before leaving: wipe down the host stand, sweep and mop the area, remove personal belongings, empty trash, lock the door, and turn out the lights.',
+      q:'Which is part of closing?',
+      a:['Print the reservation report','Empty the trash can','Set up the floor chart'], correct:1
+    }
+  ];
+
+  const menuCards = [
+    {
+        "c": "Serving Test",
+        "n": "List 3 things guests at Corazon should be able to expect.",
+        "d": "High quality food
+Locally sourced ingredients
+Extensive tequila selection
+Great hospitality experience"
+    },
+    {
+        "c": "Serving Test",
+        "n": "We strive to provide _________ without __________.",
+        "d": "Luxury, pretension"
+    },
+    {
+        "c": "Serving Test",
+        "n": "List the 4 hospitality principles.",
+        "d": "Anticipate needs
+Present without hovering
+Never rush
+Equal respect to guests"
+    },
+    {
+        "c": "Serving Test",
+        "n": "Give 3 examples of negative body language.",
+        "d": "Rolling eyes
+Hands on hips
+Crossed arms
+Fidgeting"
+    },
+    {
+        "c": "Serving Test",
+        "n": "List the first 3 steps of service.",
+        "d": "Welcome the guest/napkin in lap
+Water service
+Menu tour"
+    },
+    {
+        "c": "Serving Test",
+        "n": "Where did Aguachile originate from?",
+        "d": "Sinaloa"
+    },
+    {
+        "c": "Serving Test",
+        "n": "What does Tatemado mean?",
+        "d": "Fires roasted/charred"
+    },
+    {
+        "c": "Serving Test",
+        "n": "What is Tiger's Milk?",
+        "d": "A Peruvian sauce made with celery, lime juice, red onion, cilantro, ginger, & ahiemo peppers"
+    },
+    {
+        "c": "Serving Test",
+        "n": "What are 4 things guests expect staff to understand in an upscale Mexican restaurant?",
+        "d": "Food offering
+Culture
+Alcohol pairings
+Tequila/Mezcal knowledge"
+    },
+    {
+        "c": "Serving Test",
+        "n": "What are the five service recovery standards that can be found in your training packet?",
+        "d": "B- believe
+L- listen
+A- apologize
+S- solve
+T- thank"
+    },
+    {
+        "c": "Serving Test",
+        "n": "Name 4 common mistakes servers should avoid during service.",
+        "d": "Talking too much
+Not anticipating needs
+Avoiding eye contact
+Ordering out of order
+Forgetting names/orders
+Negative body language"
+    },
+    {
+        "c": "Serving Test",
+        "n": "What does a great menu tour help with?",
+        "d": "It helps to give the guest suggestions while giving us a chance to highlight different areas of Mexico & introduce them to new things"
+    },
+    {
+        "c": "Serving Test",
+        "n": "On what date was the Caesar salad created?",
+        "d": "July 4, 1924"
+    },
+    {
+        "c": "Serving Test",
+        "n": "What noodles are used for the Fideo Seco?",
+        "d": "Fideo"
+    },
+    {
+        "c": "Serving Test",
+        "n": "What does Seco mean?",
+        "d": "Dry"
+    },
+    {
+        "c": "Serving Test",
+        "n": "Where does the San Sebastián Cheesecake come from?",
+        "d": "Spain"
+    },
+    {
+        "c": "Serving Test",
+        "n": "Which shareable contains peanut sauce?",
+        "d": "Grilled Panela Cheese"
+    },
+    {
+        "c": "Serving Test",
+        "n": "Which raw bar item should a guest avoid if they have a soy allergy?",
+        "d": "Yellowfin Tuna"
+    },
+    {
+        "c": "Serving Test",
+        "n": "Which shareable features lobster?",
+        "d": "Lobster Elote"
+    },
+    {
+        "c": "Serving Test",
+        "n": "Which shareables come with house made corn tortillas?",
+        "d": "Queso Fundido, Pork Belly, Grilled Panela Cheese"
+    },
+    {
+        "c": "Serving Test",
+        "n": "What is the difference between the Seabass Ceviche and the Shrimp Aguachile?",
+        "d": "Ceviche comes with tostadas that the guest builds themselves
+Shrimp Aguachile comes on two preassembled tostadas"
+    },
+    {
+        "c": "Serving Test",
+        "n": "Give your script for why we do not carry ranch.",
+        "d": "All of our house made dressings are created with specific dishes in mind, carefully crafted to pair perfectly with our menu items."
+    },
+    {
+        "c": "Serving Test",
+        "n": "Can we add chicken to the Aztec soup?",
+        "d": "Yes; you can add a side of grilled chicken for $6"
+    },
+    {
+        "c": "Serving Test",
+        "n": "What dressing comes on the Ensalada de Pollo?",
+        "d": "No dressing. This is a mayo based chicken salad that comes on the 1/2 avocado"
+    },
+    {
+        "c": "Serving Test",
+        "n": "Give me your script for the Roasted Cream Corn.",
+        "d": "We start by fire roasting our corn, then we shave it off of the cob, combine it with peppers and top it with our 3 cheese Monterey blend."
+    },
+    {
+        "c": "Serving Test",
+        "n": "What makes our Mole Rojo special?",
+        "d": "It's our 16 ingredient sauce filled with 5 different types of peppers, onions, garlic, Mexican chocolate, white & black sesame seeds and chicken bouillon."
+    },
+    {
+        "c": "Serving Test",
+        "n": "Which rice accompanies the Mole Rojo Enchiladas?",
+        "d": "Mexican Rice"
+    },
+    {
+        "c": "Serving Test",
+        "n": "What protein is used in the Mole Rojo Enchiladas?",
+        "d": "Shredded Chicken"
+    },
+    {
+        "c": "Serving Test",
+        "n": "What sauce is used on the Crema Verde Enchiladas?",
+        "d": "Creamy Tomatillo Salsa"
+    },
+    {
+        "c": "Serving Test",
+        "n": "What rice comes with the Crema Verde Enchiladas?",
+        "d": "Creamy Poblano Rice"
+    },
+    {
+        "c": "Serving Test",
+        "n": "Which enchiladas contain seafood?",
+        "d": "Lobster & shrimp"
+    },
+    {
+        "c": "Serving Test",
+        "n": "What seafood is in the Langosta Camaron?",
+        "d": "Shrimp & Lobster"
+    },
+    {
+        "c": "Serving Test",
+        "n": "What cheese are in our cheese blend?",
+        "d": "Monterey, Oaxaca, Cotija"
+    },
+    {
+        "c": "Serving Test",
+        "n": "What vegetables are featured in the Raja Enchiladas?",
+        "d": "Poblano Peppers & Corn"
+    },
+    {
+        "c": "Serving Test",
+        "n": "Are the Rajas Enchiladas vegetarian?",
+        "d": "Yes"
+    },
+    {
+        "c": "Serving Test",
+        "n": "Are the Rajas Enchiladas vegan?",
+        "d": "No"
+    },
+    {
+        "c": "Serving Test",
+        "n": "What protein is used in the Bistec Enchiladas?",
+        "d": "Prime Ribeye"
+    },
+    {
+        "c": "Serving Test",
+        "n": "What cheese is found in the Bistec Enchiladas?",
+        "d": "Oaxaca"
+    },
+    {
+        "c": "Serving Test",
+        "n": "Which enchiladas are served with Creamy Poblano Rice?",
+        "d": "Verde & Langosta Cameron"
+    },
+    {
+        "c": "Serving Test",
+        "n": "Which enchiladas are served with Mexican Rice?",
+        "d": "Mole, Rajas, Bistec"
+    },
+    {
+        "c": "Serving Test",
+        "n": "How many tacos come in an order?",
+        "d": "2"
+    },
+    {
+        "c": "Serving Test",
+        "n": "What kind of tortillas are used for tacos.",
+        "d": "Corn"
+    },
+    {
+        "c": "Serving Test",
+        "n": "What cut of beef is used in the Cachetada Taco?",
+        "d": "Seared Prime Ribeye"
+    },
+    {
+        "c": "Serving Test",
+        "n": "What cheese is used on the Cachetada Taco?",
+        "d": "Panela"
+    },
+    {
+        "c": "Serving Test",
+        "n": "How did the Cachetada Taco get its name?",
+        "d": "\"Slap your mama\" because we slap the cheese on the grill"
+    },
+    {
+        "c": "Serving Test",
+        "n": "How is the tuna prepared for the Tuna Tacos?",
+        "d": "Blackened"
+    },
+    {
+        "c": "Serving Test",
+        "n": "Which salsa comes on the Cachetada Taco?",
+        "d": "Avocado Salsa"
+    },
+    {
+        "c": "Serving Test",
+        "n": "Name 3 toppings on the Tuna Taco.",
+        "d": "Salsa Matcha
+Limey slaw
+Cilantro
+Spicy mayo
+Grilled pineapple"
+    },
+    {
+        "c": "Serving Test",
+        "n": "Name 3 toppings on the Brisket Taco.",
+        "d": "Pickled red onion
+Fresh jalapeño
+Queso fresco"
+    },
+    {
+        "c": "Serving Test",
+        "n": "Which taco contains bacon?",
+        "d": "Gobernador"
+    },
+    {
+        "c": "Serving Test",
+        "n": "Which taco contains lobster?",
+        "d": "Lobster taco"
+    },
+    {
+        "c": "Serving Test",
+        "n": "What are the proteins in the Gobernador?",
+        "d": "Shrimp & bacon"
+    },
+    {
+        "c": "Serving Test",
+        "n": "What sauce is on the Lobster Taco?",
+        "d": "Creamy Chorizo"
+    },
+    {
+        "c": "Serving Test",
+        "n": "Which enchiladas would you recommend to a guest with a seafood allergy?",
+        "d": "Rajas, Mole, Verde, Brisket"
+    },
+    {
+        "c": "Serving Test",
+        "n": "How did the Gobernador get its name?",
+        "d": "The governor of Melazan wanted a taco/quesadilla combo"
+    },
+    {
+        "c": "Serving Test",
+        "n": "Which taco would you recommend to a guest who wants a sweet & spicy combo?",
+        "d": "Tuna - limey slaw, spicy mayo, & grilled pineapple"
+    },
+    {
+        "c": "Serving Test",
+        "n": "Who created the Creamy Chorizo sauce?",
+        "d": "Joey Godoy"
+    },
+    {
+        "c": "Serving Test",
+        "n": "What comes on the Avocado Salad?",
+        "d": "Avocado, hearts of palm, lime vinaigrette, bed of lettuce,
+Pepitas, tomatoes"
+    },
+    {
+        "c": "Serving Test",
+        "n": "Explain the Esquite Tatemado.",
+        "d": "Served in a roasted corn husk, it's the Corazon spin on the Mexican Elote snack. Our fire roasted corn, Mexican crema, peppers and three cheese blend takes this favorite to a new level."
+    },
+    {
+        "c": "Serving Test",
+        "n": "Explain the Roasted Brussels.",
+        "d": "Fresh Brussels oven baked then tossed in our Agave Vinaigrette. It's the perfect combination of sweet, spicy, & savory"
+    },
+    {
+        "c": "Serving Test",
+        "n": "Name 7 of the 16 ingredients found in our Mole",
+        "d": "Adobe Peppers
+Black sesame seeds
+White sesame seeds
+Mexican chocolate
+Garlic
+Onion
+Chicken Bouillon"
+    },
+    {
+        "c": "Serving Test",
+        "n": "What can cut down on the earthiness of the Mole?",
+        "d": "Salt"
+    },
+    {
+        "c": "Serving Test",
+        "n": "What paste is used for the Creamy Chorizo Sauce and where is it from?",
+        "d": "Hanssa Paste, Africa"
+    },
+    {
+        "c": "Serving Test",
+        "n": "What does Borracho mean?",
+        "d": "Drunk"
+    },
+    {
+        "c": "Serving Test",
+        "n": "What vegetables are in the Corn Succotash?",
+        "d": "Fire roasted corn, red onion, Mexican zucchini, pepper, red & orange bell peppers, jalapeños"
+    },
+    {
+        "c": "Serving Test",
+        "n": "Describe the Creamy Poblano Rice.",
+        "d": "A creamy Mexican risotto with Poblano peppers"
+    },
+    {
+        "c": "Serving Test",
+        "n": "What is one thing that makes our Mexican rice different from other Mexican restaurants?",
+        "d": "We use fresh tomatoes"
+    },
+    {
+        "c": "Serving Test",
+        "n": "Name all of the ingredients in the Yellowfin Tuna Tiradito.",
+        "d": "Tuna, Avocado, Citrus, Soy, Baby Greens"
+    },
+    {
+        "c": "Serving Test",
+        "n": "What's the difference between our Ceviche and other ceviches?",
+        "d": "Instead of boiled shrimp, we use a high quality Sea Bass and instead of a solely citrus based sauce, we use Tiger Milk."
+    },
+    {
+        "c": "Serving Test",
+        "n": "What sauce comes on the Papas Adobadas?",
+        "d": "Smoked Adobo Sauce"
+    },
+    {
+        "c": "Serving Test",
+        "n": "Name the vegetables that come on the Grilled Panela Cheese.",
+        "d": "Fresh respect & green tomatoes, jalapeños, avocado, & cilantro"
+    },
+    {
+        "c": "Serving Test",
+        "n": "What is a Pepita?",
+        "d": "Green, edible kernels of specific pumpkin varieties"
+    },
+    {
+        "c": "Serving Test",
+        "n": "What is the vibrant green sauce on the Green Spaghetti made from?",
+        "d": "Roasted Poblano Peppers"
+    }
+];
+
+  const signoffs = [
+    ['opening','Opening / Pre-Shift'],['greeting','Greeting & Guest Flow'],['resy','Resy / Reservations'],['walkins','Walk-Ins'],['onehost','One-Host Seating'],['twohost','Two-Host Seating'],['rotation','Server Rotation'],['menu','Menu Knowledge'],['closing','Closing']
+  ];
+
+  const blankState = () => ({
+    checklistDate: todayKey(),
+    opening: Array(openingTasks.length).fill(false),
+    closing: Array(closingTasks.length).fill(false),
+    trainingDone: {},
+    rotation: {servers:[], current:0, history:[]},
+    study: {mastered:{}, missed:{}, scores:[]},
+    trainees:[], selectedTrainee:null
+  });
+
+  let state = loadState();
+  function loadState(){
+    try {
+      const raw = localStorage.getItem(APP_KEY);
+      const base = blankState();
+      const parsed = raw ? JSON.parse(raw) : {};
+      const merged = {...base,...parsed};
+      merged.rotation = {...base.rotation,...(parsed.rotation||{})};
+      merged.study = {...base.study,...(parsed.study||{})};
+      if(merged.checklistDate !== todayKey()){
+        merged.checklistDate = todayKey();
+        merged.opening = Array(openingTasks.length).fill(false);
+        merged.closing = Array(closingTasks.length).fill(false);
+      }
+      merged.opening = normalizeChecks(merged.opening, openingTasks.length);
+      merged.closing = normalizeChecks(merged.closing, closingTasks.length);
+      return merged;
+    } catch(e){ return blankState(); }
+  }
+  function normalizeChecks(arr,len){ return Array.from({length:len},(_,i)=>Boolean(arr && arr[i])); }
+  function save(){ localStorage.setItem(APP_KEY, JSON.stringify(state)); }
+  function toast(msg){ const el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),1700); }
+  function escapeHTML(s=''){return String(s).replace(/[&<>'"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#039;','"':'&quot;'}[m]));}
+
+  // Navigation
+  document.querySelectorAll('.nav-btn').forEach(btn=>btn.addEventListener('click',()=>{
+    document.querySelectorAll('.nav-btn').forEach(b=>b.classList.toggle('active',b===btn));
+    document.querySelectorAll('.view').forEach(v=>v.classList.toggle('active',v.id===btn.dataset.view));
+    window.scrollTo({top:0,behavior:'smooth'});
+  }));
+
+  // Checklists
+  function renderChecklist(type,tasks){
+    const wrap=document.getElementById(type==='opening'?'openingChecklist':'closingChecklist');
+    const values=state[type];
+    wrap.innerHTML=tasks.map((t,i)=>`<div class="check-row ${values[i]?'done':''}"><input type="checkbox" id="${type}-${i}" ${values[i]?'checked':''}><label for="${type}-${i}">${escapeHTML(t)}</label></div>`).join('');
+    wrap.querySelectorAll('input').forEach((box,i)=>box.addEventListener('change',()=>{state[type][i]=box.checked;save();renderChecklists();}));
+    const done=values.filter(Boolean).length;
+    const pct=Math.round(done/tasks.length*100);
+    document.getElementById(type==='opening'?'openCount':'closeCount').textContent=`${done} of ${tasks.length} complete`;
+    document.getElementById(type==='opening'?'openProgress':'closeProgress').style.width=pct+'%';
+  }
+  function renderChecklists(){renderChecklist('opening',openingTasks);renderChecklist('closing',closingTasks);}
+  window.resetChecklist=(type)=>{state[type]=Array(type==='opening'?openingTasks.length:closingTasks.length).fill(false);save();renderChecklists();toast('Checklist reset');};
+  document.getElementById('todayPill').textContent=new Intl.DateTimeFormat(undefined,{weekday:'short',month:'short',day:'numeric'}).format(new Date());
+
+  // Handbook static steps
+  function renderSteps(id,arr){document.getElementById(id).innerHTML=arr.map((s,i)=>`<div class="step"><div class="num">${i+1}</div><div>${escapeHTML(s)}</div></div>`).join('');}
+  renderSteps('preShiftSteps',openingTasks);renderSteps('twoHostSteps',twoHost);renderSteps('oneHostSteps',oneHost);renderSteps('rotationSteps',rotationInstructions);renderSteps('postShiftSteps',postShift);
+  document.querySelectorAll('#handbookNav .chip').forEach(ch=>ch.addEventListener('click',()=>{
+    document.querySelectorAll('#handbookNav .chip').forEach(c=>c.classList.toggle('active',c===ch));
+    document.getElementById(ch.dataset.anchor).scrollIntoView({behavior:'smooth',block:'start'});
+  }));
+
+  function renderTraining(){
+    const wrap=document.getElementById('trainingModules');
+    wrap.innerHTML=trainingModules.map(m=>`<div class="module" data-module="${m.id}">
+      <button class="module-head"><span>${state.trainingDone[m.id]?'✓':'○'}</span><strong>${escapeHTML(m.title)}</strong><span>⌄</span></button>
+      <div class="module-body"><p>${escapeHTML(m.body)}</p>
+        <div class="knowledge"><label>${escapeHTML(m.q)}</label><div class="answers">${m.a.map((a,i)=>`<button class="answer-btn" data-i="${i}">${escapeHTML(a)}</button>`).join('')}</div></div>
+        <div class="button-row"><button class="btn small ${state.trainingDone[m.id]?'secondary':'sage'} complete-module">${state.trainingDone[m.id]?'Mark incomplete':'I understand this ✓'}</button></div>
+      </div></div>`).join('');
+    wrap.querySelectorAll('.module').forEach(el=>{
+      const m=trainingModules.find(x=>x.id===el.dataset.module);
+      el.querySelector('.module-head').addEventListener('click',()=>el.classList.toggle('open'));
+      el.querySelectorAll('.answer-btn').forEach(b=>b.addEventListener('click',()=>{
+        el.querySelectorAll('.answer-btn').forEach(x=>x.classList.remove('correct','wrong'));
+        b.classList.add(Number(b.dataset.i)===m.correct?'correct':'wrong');
+        if(Number(b.dataset.i)!==m.correct) el.querySelectorAll('.answer-btn')[m.correct].classList.add('correct');
+      }));
+      el.querySelector('.complete-module').addEventListener('click',()=>{state.trainingDone[m.id]=!state.trainingDone[m.id];save();renderTraining();});
+    });
+    const done=trainingModules.filter(m=>state.trainingDone[m.id]).length;
+    document.getElementById('trainingProgress').style.width=Math.round(done/trainingModules.length*100)+'%';
+    document.getElementById('trainingCount').textContent=`${done} of ${trainingModules.length} sections completed`;
+  }
+
+  // Rotation
+  function addServer(){
+    const inp=document.getElementById('serverNameInput'); const name=inp.value.trim(); if(!name)return;
+    state.rotation.servers.push({id:Date.now()+Math.random(),name}); inp.value='';save();renderRotation();inp.focus();
+  }
+  function statsFor(id){
+    const rows=state.rotation.history.filter(h=>h.serverId===id && h.type==='seat');
+    return {parties:rows.length,covers:rows.reduce((a,b)=>a+Number(b.party||0),0)};
+  }
+  function renderRotation(){
+    const servers=state.rotation.servers;
+    if(state.rotation.current>=servers.length)state.rotation.current=0;
+    document.getElementById('serverCountPill').textContent=`${servers.length} server${servers.length===1?'':'s'}`;
+    const list=document.getElementById('serverList');
+    list.innerHTML=servers.length?servers.map((s,i)=>{const st=statsFor(s.id);return `<div class="server ${i===state.rotation.current?'current':''}"><div class="badge">${i+1}</div><div><div class="server-name">${escapeHTML(s.name)}</div><div class="server-stats">${st.parties} ${st.parties===1?'party':'parties'} · ${st.covers} covers</div></div><div class="server-actions"><button class="mini" data-act="up" data-i="${i}" aria-label="Move up">↑</button><button class="mini" data-act="down" data-i="${i}" aria-label="Move down">↓</button><button class="mini" data-act="del" data-i="${i}" aria-label="Remove">×</button></div></div>`}).join(''):'<div class="empty">Add the servers working this shift to start the rotation.</div>';
+    list.querySelectorAll('.mini').forEach(b=>b.addEventListener('click',()=>{
+      const i=Number(b.dataset.i), act=b.dataset.act;
+      if(act==='del'){state.rotation.servers.splice(i,1);state.rotation.current=0;}
+      if(act==='up'&&i>0){[servers[i-1],servers[i]]=[servers[i],servers[i-1]];state.rotation.current=0;}
+      if(act==='down'&&i<servers.length-1){[servers[i+1],servers[i]]=[servers[i],servers[i+1]];state.rotation.current=0;}
+      save();renderRotation();
+    }));
+    document.getElementById('currentServer').textContent=servers.length?servers[state.rotation.current].name:'Add servers';
+    renderHistory();
+  }
+  function renderHistory(){
+    const h=[...state.rotation.history].reverse(); const wrap=document.getElementById('historyList');
+    wrap.innerHTML=h.length?h.map(x=>`<div class="history-row ${x.type==='skip'?'skip':''}"><span>${escapeHTML(x.time)}</span><strong>${escapeHTML(x.server)}</strong><span>${x.type==='seat'?'T '+escapeHTML(x.table||'—'):'SKIP'}</span><span>${x.type==='seat'?escapeHTML(x.party||'—')+'p':'—'}</span><button class="mini" data-id="${x.id}" aria-label="Delete entry">×</button></div>`).join(''):'<div class="empty">No seatings yet.</div>';
+    wrap.querySelectorAll('.mini').forEach(b=>b.addEventListener('click',()=>{state.rotation.history=state.rotation.history.filter(x=>String(x.id)!==b.dataset.id);save();renderRotation();}));
+  }
+  function advance(){if(state.rotation.servers.length)state.rotation.current=(state.rotation.current+1)%state.rotation.servers.length;}
+  function addRotationEntry(type){
+    const s=state.rotation.servers[state.rotation.current]; if(!s){toast('Add servers first');return;}
+    let table='',party='';
+    if(type==='seat'){
+      table=document.getElementById('tableInput').value.trim(); party=Number(document.getElementById('partyInput').value);
+      if(!table||!party||party<1){toast('Enter table and party size');return;}
+    }
+    const time=new Intl.DateTimeFormat(undefined,{hour:'numeric',minute:'2-digit'}).format(new Date());
+    state.rotation.history.push({id:Date.now(),type,serverId:s.id,server:s.name,table,party,time});
+    advance();save();document.getElementById('tableInput').value='';document.getElementById('partyInput').value='';renderRotation();toast(type==='seat'?'Table seated':'Server skipped');
+  }
+  document.getElementById('addServerBtn').addEventListener('click',addServer);
+  document.getElementById('serverNameInput').addEventListener('keydown',e=>{if(e.key==='Enter')addServer()});
+  document.getElementById('seatBtn').addEventListener('click',()=>addRotationEntry('seat'));
+  document.getElementById('skipBtn').addEventListener('click',()=>addRotationEntry('skip'));
+  document.getElementById('undoBtn').addEventListener('click',()=>{
+    if(!state.rotation.history.length){toast('Nothing to undo');return;}
+    state.rotation.history.pop();
+    if(state.rotation.servers.length) state.rotation.current=(state.rotation.current-1+state.rotation.servers.length)%state.rotation.servers.length;
+    save();renderRotation();toast('Last action undone');
+  });
+  window.resetRotation=()=>{if(confirm('Start a new shift? This clears the current server list and seating history.')){state.rotation={servers:[],current:0,history:[]};save();renderRotation();}};
+
+  // Study
+  let filteredCards=[]; let cardIndex=0; let quiz=[]; let quizIndex=0; let quizScore=0; let quizMissed=[]; let quizLocked=false;
+  const categories=['All',...Array.from(new Set(menuCards.map(x=>x.c)))];
+  const categoryFilter=document.getElementById('categoryFilter');
+  categoryFilter.innerHTML=categories.map(c=>`<option>${escapeHTML(c)}</option>`).join('');
+  document.getElementById('deckCountPill').textContent=`${menuCards.length} cards`;
+  function cardKey(card){return card.c+'|'+card.n;}
+  function refreshFiltered(){
+    const cat=categoryFilter.value||'All', missedOnly=document.getElementById('missedOnly').checked;
+    filteredCards=menuCards.filter(c=>(cat==='All'||c.c===cat)&&(!missedOnly||state.study.missed[cardKey(c)]));
+    if(!filteredCards.length && missedOnly){filteredCards=[];} if(cardIndex>=filteredCards.length)cardIndex=0;renderCard();renderMastery();
+  }
+  function renderCard(){
+    const fc=document.getElementById('flashcard');fc.classList.remove('flipped');
+    if(!filteredCards.length){document.getElementById('cardCategory').textContent='No cards';document.getElementById('cardFront').textContent='Nothing to study here yet';document.getElementById('cardBack').textContent='Turn off “Missed only” or choose another category.';document.getElementById('flashCounter').textContent='';return;}
+    const c=filteredCards[cardIndex];document.getElementById('cardCategory').textContent=c.c;document.getElementById('cardFront').textContent=c.n;document.getElementById('cardBack').textContent=c.d;document.getElementById('flashCounter').textContent=`${cardIndex+1} of ${filteredCards.length} · ${state.study.mastered[cardKey(c)]?'Mastered':'Not mastered'}`;
+  }
+  function stepCard(delta){if(!filteredCards.length)return;cardIndex=(cardIndex+delta+filteredCards.length)%filteredCards.length;renderCard();}
+  document.getElementById('flashcard').addEventListener('click',e=>e.currentTarget.classList.toggle('flipped'));
+  document.getElementById('nextCardBtn').addEventListener('click',()=>stepCard(1));
+  document.getElementById('prevCardBtn').addEventListener('click',()=>stepCard(-1));
+  document.getElementById('masteredBtn').addEventListener('click',()=>{if(!filteredCards.length)return;const k=cardKey(filteredCards[cardIndex]);state.study.mastered[k]=true;delete state.study.missed[k];save();stepCard(1);});
+  document.getElementById('needsWorkBtn').addEventListener('click',()=>{if(!filteredCards.length)return;const k=cardKey(filteredCards[cardIndex]);state.study.missed[k]=true;delete state.study.mastered[k];save();stepCard(1);});
+  categoryFilter.addEventListener('change',()=>{cardIndex=0;refreshFiltered()});
+  document.getElementById('missedOnly').addEventListener('change',()=>{cardIndex=0;refreshFiltered()});
+  document.getElementById('shuffleBtn').addEventListener('click',()=>{filteredCards.sort(()=>Math.random()-.5);cardIndex=0;renderCard();toast('Deck shuffled');});
+  document.getElementById('resetMasteryBtn').addEventListener('click',()=>{if(confirm('Reset mastered cards, missed cards, and quiz scores?')){state.study={mastered:{},missed:{},scores:[]};save();refreshFiltered();toast('Study progress reset');}});
+
+  function randomSample(arr,n){const copy=[...arr];for(let i=copy.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[copy[i],copy[j]]=[copy[j],copy[i]];}return copy.slice(0,n);}
+  function beginQuiz(){
+    let pool=filteredCards.length>=4?filteredCards:menuCards.filter(c=>(categoryFilter.value==='All'||c.c===categoryFilter.value));
+    if(pool.length<4){pool=menuCards;}
+    quiz=randomSample(pool,Math.min(10,pool.length));quizIndex=0;quizScore=0;quizMissed=[];quizLocked=false;renderQuizQuestion();
+  }
+  function renderQuizQuestion(){
+    const box=document.getElementById('quizBox');
+    if(quizIndex>=quiz.length){
+      state.study.scores.unshift({date:new Date().toLocaleDateString(),score:quizScore,total:quiz.length});state.study.scores=state.study.scores.slice(0,10);save();
+      box.innerHTML=`<div class="score-card"><div class="eyebrow">Quiz Complete</div><div class="big-score">${quizScore}/${quiz.length}</div><p>${quizMissed.length?`${quizMissed.length} card${quizMissed.length===1?' needs':'s need'} another look.`:'Perfect score. Nice.'}</p><button class="btn" id="quizAgain">Take another quiz</button></div>`;
+      document.getElementById('quizAgain').addEventListener('click',beginQuiz);renderMastery();return;
+    }
+    const card=quiz[quizIndex]; const samePool=menuCards.filter(x=>x!==card && (categoryFilter.value==='All'||x.c===categoryFilter.value));
+    let distractors=randomSample(samePool,3); if(distractors.length<3)distractors=randomSample(menuCards.filter(x=>x!==card),3);
+    const answers=randomSample([card,...distractors],4);
+    box.innerHTML=`<div class="pill">Question ${quizIndex+1} of ${quiz.length}</div><div class="question">Which menu item matches this description?<br><span style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:17px;color:var(--muted);font-weight:500">${escapeHTML(card.d)}</span></div><div class="quiz-answers">${answers.map((a,i)=>`<button class="quiz-answer" data-key="${escapeHTML(cardKey(a))}">${escapeHTML(a.n)}</button>`).join('')}</div><div class="button-row" id="quizNextRow" style="display:none"><button class="btn" id="quizNextBtn">${quizIndex===quiz.length-1?'See score':'Next question'}</button></div>`;
+    quizLocked=false;
+    box.querySelectorAll('.quiz-answer').forEach(b=>b.addEventListener('click',()=>{
+      if(quizLocked)return;quizLocked=true;const isCorrect=b.dataset.key===cardKey(card);
+      box.querySelectorAll('.quiz-answer').forEach(x=>{if(x.dataset.key===cardKey(card))x.classList.add('correct');});
+      if(isCorrect){quizScore++;delete state.study.missed[cardKey(card)];}else{b.classList.add('wrong');state.study.missed[cardKey(card)]=true;quizMissed.push(card);}save();
+      document.getElementById('quizNextRow').style.display='flex';document.getElementById('quizNextBtn').addEventListener('click',()=>{quizIndex++;renderQuizQuestion();},{once:true});
+    }));
+  }
+  function renderMastery(){
+    const mastered=menuCards.filter(c=>state.study.mastered[cardKey(c)]).length, missed=menuCards.filter(c=>state.study.missed[cardKey(c)]).length;
+    const latest=state.study.scores[0];document.getElementById('masterySummary').textContent=`${mastered} mastered · ${missed} marked needs work${latest?` · Last quiz ${latest.score}/${latest.total}`:''}`;
+    document.getElementById('masteryGrid').innerHTML=menuCards.map(c=>`<div class="master-item ${state.study.mastered[cardKey(c)]?'done':''}"><span class="dot"></span><div><strong>${escapeHTML(c.n)}</strong><div class="tiny">${escapeHTML(c.c)}${state.study.missed[cardKey(c)]?' · Needs work':''}</div></div></div>`).join('');
+  }
+  document.querySelectorAll('[data-study]').forEach(btn=>btn.addEventListener('click',()=>{
+    document.querySelectorAll('[data-study]').forEach(x=>x.classList.toggle('active',x===btn));
+    document.getElementById('studyCards').style.display=btn.dataset.study==='cards'?'block':'none';
+    document.getElementById('studyQuiz').style.display=btn.dataset.study==='quiz'?'block':'none';
+    document.getElementById('studyMastery').style.display=btn.dataset.study==='mastery'?'block':'none';
+    if(btn.dataset.study==='quiz')beginQuiz(); if(btn.dataset.study==='mastery')renderMastery();
+  }));
+
+  // Trainer
+  function addTrainee(){const inp=document.getElementById('traineeNameInput');const name=inp.value.trim();if(!name)return;const id=Date.now();state.trainees.push({id,name,signoffs:{},notes:'',updated:new Date().toLocaleDateString()});state.selectedTrainee=id;inp.value='';save();renderTrainer();}
+  function renderTrainer(){
+    const list=document.getElementById('traineeList');
+    list.innerHTML=state.trainees.length?state.trainees.map(t=>{const done=Object.values(t.signoffs||{}).filter(Boolean).length;return `<button class="trainee-btn ${t.id===state.selectedTrainee?'active':''}" data-id="${t.id}"><span><strong>${escapeHTML(t.name)}</strong><div class="tiny">${done}/${signoffs.length} signed off</div></span><span>›</span></button>`}).join(''):'<div class="empty">Add a trainee to begin.</div>';
+    list.querySelectorAll('.trainee-btn').forEach(b=>b.addEventListener('click',()=>{state.selectedTrainee=Number(b.dataset.id);save();renderTrainer();}));
+    const t=state.trainees.find(x=>x.id===state.selectedTrainee)||state.trainees[0];
+    if(t && state.selectedTrainee!==t.id){state.selectedTrainee=t.id;save();}
+    const detail=document.getElementById('trainerDetail');
+    if(!t){detail.innerHTML='<div class="empty">Choose or add a trainee to view their training checklist.</div>';return;}
+    const done=Object.values(t.signoffs||{}).filter(Boolean).length;
+    detail.innerHTML=`<div class="split-title"><div><div class="eyebrow">Training Record</div><h3>${escapeHTML(t.name)}</h3><p class="subtle">${done} of ${signoffs.length} sign-offs complete · Updated ${escapeHTML(t.updated||'—')}</p></div><button class="btn danger small" id="deleteTrainee">Delete</button></div><div class="progress"><div style="width:${Math.round(done/signoffs.length*100)}%"></div></div><div class="signoff-grid">${signoffs.map(([id,label])=>`<div class="signoff"><input type="checkbox" id="so-${id}" data-so="${id}" ${t.signoffs&&t.signoffs[id]?'checked':''}><label for="so-${id}">${escapeHTML(label)}</label></div>`).join('')}</div><h4>Trainer Notes</h4><textarea id="trainerNotes" placeholder="Strengths, what to review next shift, quiz score, etc.">${escapeHTML(t.notes||'')}</textarea><div class="button-row"><button class="btn" id="saveTrainerNotes">Save notes</button></div>`;
+    detail.querySelectorAll('[data-so]').forEach(box=>box.addEventListener('change',()=>{t.signoffs=t.signoffs||{};t.signoffs[box.dataset.so]=box.checked;t.updated=new Date().toLocaleDateString();save();renderTrainer();}));
+    document.getElementById('saveTrainerNotes').addEventListener('click',()=>{t.notes=document.getElementById('trainerNotes').value;t.updated=new Date().toLocaleDateString();save();renderTrainer();toast('Trainer notes saved');});
+    document.getElementById('deleteTrainee').addEventListener('click',()=>{if(confirm(`Delete ${t.name}'s training record?`)){state.trainees=state.trainees.filter(x=>x.id!==t.id);state.selectedTrainee=state.trainees[0]?.id||null;save();renderTrainer();}});
+  }
+  document.getElementById('addTraineeBtn').addEventListener('click',addTrainee);document.getElementById('traineeNameInput').addEventListener('keydown',e=>{if(e.key==='Enter')addTrainee()});
+
+  // Settings / backup
+  const modal=document.getElementById('settingsModal');document.getElementById('settingsBtn').addEventListener('click',()=>modal.classList.add('open'));document.getElementById('closeSettings').addEventListener('click',()=>modal.classList.remove('open'));modal.addEventListener('click',e=>{if(e.target===modal)modal.classList.remove('open')});
+  document.getElementById('exportBtn').addEventListener('click',()=>{
+    const blob=new Blob([JSON.stringify({app:'Corazon Host Hub',version:1,exported:new Date().toISOString(),state},null,2)],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=`corazon-host-hub-backup-${todayKey()}.json`;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
+  });
+  document.getElementById('importFile').addEventListener('change',e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const data=JSON.parse(r.result);if(!data.state)throw new Error();state={...blankState(),...data.state};save();location.reload();}catch(err){alert('That backup file could not be read.');}};r.readAsText(f);});
+  document.getElementById('clearAllBtn').addEventListener('click',()=>{if(confirm('Clear ALL saved checklists, rotation history, study progress, and trainee records on this iPad?')){localStorage.removeItem(APP_KEY);location.reload();}});
+
+  // Initial render
+  renderChecklists();renderTraining();renderRotation();refreshFiltered();renderTrainer();
+})();
+</script>
+</body>
+</html>
