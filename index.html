@@ -168,7 +168,7 @@
     .signoff input{width:22px;height:22px;accent-color:var(--sage)}
     .signoff label{font-weight:700}
     textarea{width:100%;min-height:130px;resize:vertical}
-    .bottom-nav{position:fixed;z-index:25;left:50%;transform:translateX(-50%);bottom:calc(10px + env(safe-area-inset-bottom));width:min(720px,calc(100% - 20px));display:grid;grid-template-columns:repeat(5,1fr);gap:6px;padding:7px;border:1px solid rgba(111,38,54,.12);background:rgba(255,250,243,.94);backdrop-filter:blur(14px);border-radius:22px;box-shadow:0 14px 40px rgba(66,38,28,.18)}
+    .bottom-nav{position:fixed;z-index:25;left:50%;transform:translateX(-50%);bottom:calc(10px + env(safe-area-inset-bottom));width:min(860px,calc(100% - 20px));display:grid;grid-template-columns:repeat(6,1fr);gap:6px;padding:7px;border:1px solid rgba(111,38,54,.12);background:rgba(255,250,243,.94);backdrop-filter:blur(14px);border-radius:22px;box-shadow:0 14px 40px rgba(66,38,28,.18)}
     .nav-btn{border:0;background:transparent;color:var(--muted);border-radius:16px;padding:9px 5px 8px;display:grid;place-items:center;gap:3px;font-size:11px;font-weight:800}
     .nav-btn span:first-child{font-size:20px}
     .nav-btn.active{background:var(--wine);color:white}
@@ -182,6 +182,26 @@
     .toast{position:fixed;z-index:100;left:50%;transform:translateX(-50%) translateY(20px);bottom:110px;background:var(--wine-dark);color:white;padding:11px 16px;border-radius:999px;opacity:0;pointer-events:none;transition:.2s;font-weight:800;font-size:13px;box-shadow:var(--shadow)}
     .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
     .source-note{margin-top:18px;font-size:12px;color:var(--muted);text-align:center}
+    .chit-input{width:100%;min-height:190px;resize:vertical;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;font-size:13px;line-height:1.4}
+    .chit-help{display:grid;grid-template-columns:auto 1fr;gap:10px 12px;align-items:start;margin-top:14px;font-size:14px;color:var(--muted)}
+    .chit-help .num{width:26px;height:26px;font-size:12px}
+    .chit-editor{display:grid;gap:12px;margin-top:14px}
+    .chit-edit{border:1px solid var(--line);border-radius:18px;background:#fffdf8;padding:14px}
+    .chit-edit-head{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:11px}
+    .chit-edit-grid{display:grid;grid-template-columns:1.5fr .65fr .8fr;gap:9px}
+    .chit-edit .field label{font-size:11px;font-weight:900;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+    .chit-edit .notes-field{margin-top:9px}
+    .chit-edit textarea{min-height:72px}
+    .chit-preview-title{margin-top:22px}
+    .chit-preview-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:12px}
+    .preview-chit{aspect-ratio:.78;border:1px dashed #bba996;background:white;border-radius:10px;padding:14px;display:flex;flex-direction:column;min-height:245px;overflow:hidden}
+    .preview-chit .chit-name{font-family:Georgia,"Times New Roman",serif;font-size:22px;line-height:1.05;color:var(--wine-dark);font-weight:700;margin-bottom:8px}
+    .preview-chit .chit-main{font-size:18px;font-weight:900;color:var(--ink);margin-bottom:4px}
+    .preview-chit .chit-time{font-size:16px;color:var(--ink);font-weight:800;margin-bottom:8px}
+    .preview-chit .chit-notes{font-size:13px;line-height:1.35;white-space:pre-wrap;overflow-wrap:anywhere;margin-top:auto;border-top:1px solid #eee2d4;padding-top:8px}
+    .preview-chit .chit-notes:empty{border-top:0}
+    .chit-privacy{margin-top:12px;background:#edf0e9;border:1px solid #d7dfd1;padding:11px 13px;border-radius:14px;color:#46513f;font-size:13px}
+    .print-chits-grid{display:none}
     @media(max-width:850px){
       .rotation-layout,.trainer-layout{grid-template-columns:1fr}
       .seat-panel{position:static}
@@ -189,7 +209,8 @@
     }
     @media(max-width:650px){
       main{padding:16px}
-      .grid-2,.mastery-grid,.signoff-grid{grid-template-columns:1fr}
+      .grid-2,.mastery-grid,.signoff-grid,.chit-preview-grid{grid-template-columns:1fr}
+      .chit-edit-grid{grid-template-columns:1fr 1fr}
       h2{font-size:27px}.hero-small{align-items:flex-start;flex-direction:column}
       .history-row{grid-template-columns:58px 1fr 50px 44px auto;font-size:12px;padding:9px}
       .flashcard{min-height:390px}.flash-face{padding:24px}.flash-face h3{font-size:29px}.flash-face p{font-size:17px}
@@ -197,8 +218,23 @@
       .form-grid{grid-template-columns:1fr}
     }
     @media print{
+      @page{size:letter portrait;margin:.3in}
       .bottom-nav,.app-header,.button-row,.icon-btn,.study-toolbar,.mode-tabs{display:none!important}
-      body{background:white;padding:0}.view{display:none!important}#handbook.view{display:block!important}main{max-width:none;padding:0}.card{box-shadow:none;break-inside:avoid}
+      body{background:white;padding:0}
+      .view{display:none!important}
+      body:not(.printing-chits) #handbook.view{display:block!important}
+      body.printing-chits #chits.view{display:block!important}
+      main{max-width:none;padding:0}
+      .card{box-shadow:none;break-inside:avoid}
+      body.printing-chits #chits .no-print,body.printing-chits #chits .hero-small,body.printing-chits #chits .chit-preview-title,body.printing-chits #chits .chit-preview-grid{display:none!important}
+      body.printing-chits #chits .print-chits-grid{display:grid!important;grid-template-columns:repeat(3,1fr);grid-auto-rows:3.28in;gap:0}
+      body.printing-chits #chits{margin:0;padding:0}
+      .print-chit{border:.8pt dashed #777;padding:.16in;display:flex;flex-direction:column;break-inside:avoid;page-break-inside:avoid;overflow:hidden;background:white}
+      .print-chit .chit-name{font-family:Georgia,"Times New Roman",serif;font-size:19pt;line-height:1.03;font-weight:700;margin:0 0 .1in}
+      .print-chit .chit-main{font-size:15pt;font-weight:900;margin-bottom:.05in}
+      .print-chit .chit-time{font-size:12pt;font-weight:800;margin-bottom:.08in;color:#222}
+      .print-chit .chit-notes{font-size:10.5pt;line-height:1.28;white-space:pre-wrap;overflow-wrap:anywhere;margin-top:auto;border-top:.5pt solid #aaa;padding-top:.08in}
+      .print-chit .chit-notes:empty{border-top:0}
     }
   </style>
 </head>
@@ -336,6 +372,51 @@
       </div>
     </section>
 
+    <!-- RESERVATION CHITS -->
+    <section class="view" id="chits">
+      <div class="hero-small">
+        <div><div class="eyebrow">Reservation Prep</div><h2>Printable Chit Sheet</h2><p class="subtle">Paste the reservation spreadsheet, check the preview, then print and cut.</p></div>
+        <span class="pill" id="chitCountPill">0 chits</span>
+      </div>
+
+      <div class="grid-2 no-print">
+        <div class="card">
+          <h3>1. Paste Reservations</h3>
+          <p class="subtle">In Google Sheets, select the reservation rows and copy them. Paste everything below — headers, summary rows and phone numbers are okay.</p>
+          <textarea class="chit-input section-space" id="chitPaste" placeholder="Paste the copied Google Sheets cells here…"></textarea>
+          <div class="button-row">
+            <button class="btn" id="buildChitsBtn">Build chits</button>
+            <button class="btn secondary" id="addChitBtn">+ Add one manually</button>
+            <button class="btn secondary" id="clearChitsBtn">Clear</button>
+          </div>
+          <div class="chit-privacy"><strong>Guest privacy:</strong> phone numbers are ignored. The app keeps only the information needed for the printed chits and automatically clears this reservation list on a new day.</div>
+        </div>
+
+        <div class="card">
+          <h3>How It Works</h3>
+          <div class="chit-help">
+            <span class="num">1</span><div>Copy the reservation table from the spreadsheet exactly as-is.</div>
+            <span class="num">2</span><div>Tap <strong>Build chits</strong>. The app pulls the guest name, party size, reservation time and notes. The table number stays blank so you can write it in when the party arrives.</div>
+            <span class="num">3</span><div>Fix anything in the editable list if the pasted report formatted something strangely.</div>
+            <span class="num">4</span><div>Tap <strong>Print chits</strong>. They print nine to a letter-size page with cut lines.</div>
+          </div>
+          <div class="note section-space"><strong>Chit format:</strong> Guest name · party size @ ______ (write the table number in when they arrive) · reservation time · occasion / guest notes.</div>
+        </div>
+      </div>
+
+      <div class="card section-space no-print" id="chitEditorCard">
+        <div class="split-title"><div><h3>2. Check Chits</h3><p class="subtle" id="chitEditorSummary">Paste reservations to begin.</p></div><button class="btn sage" id="printChitsBtn">Print chits</button></div>
+        <div class="chit-editor" id="chitEditor"></div>
+      </div>
+
+      <div class="no-print">
+        <div class="split-title chit-preview-title"><div><h3>Print Preview</h3><p class="subtle">Each box below becomes one cut-apart chit.</p></div></div>
+        <div class="chit-preview-grid" id="chitPreviewGrid"></div>
+      </div>
+
+      <div class="print-chits-grid" id="chitPrintGrid"></div>
+    </section>
+
     <!-- FLASHCARDS -->
     <section class="view" id="flashcards">
       <div class="hero-small">
@@ -406,6 +487,7 @@
     <button class="nav-btn active" data-view="checklists"><span>✓</span><span>Checklists</span></button>
     <button class="nav-btn" data-view="handbook"><span>☰</span><span>Handbook</span></button>
     <button class="nav-btn" data-view="rotation"><span>↻</span><span>Rotation</span></button>
+    <button class="nav-btn" data-view="chits"><span>▦</span><span>Chits</span></button>
     <button class="nav-btn" data-view="flashcards"><span>◇</span><span>Study</span></button>
     <button class="nav-btn" data-view="trainer"><span>★</span><span>Trainer</span></button>
   </nav>
@@ -417,7 +499,7 @@
       <div class="button-row"><button class="btn" id="exportBtn">Export backup</button><label class="btn secondary" for="importFile">Restore backup</label><input id="importFile" type="file" accept="application/json" hidden></div>
       <div class="divider"></div>
       <h4>About this build</h4>
-      <p class="tiny">Built as a single self-contained HTML file for GitHub Pages / Safari Home Screen use. Host procedures are based on the provided Corazón host sheet. Menu study cards are based on the restaurant’s official online menu as retrieved September 2026. The First Serving Test deck uses the Quizlet cards provided by the user.</p>
+      <p class="tiny">Built as a single self-contained HTML file for GitHub Pages / Safari Home Screen use. Host procedures are based on the provided Corazón host sheet. Menu study cards are based on the restaurant’s official online menu as retrieved September 2026. The First Serving Test deck uses the Quizlet cards provided by the user. Reservation chits are generated locally from pasted spreadsheet data; phone numbers are ignored.</p>
       <div class="divider"></div>
       <button class="btn danger" id="clearAllBtn">Clear all saved app data</button>
     </div>
@@ -427,6 +509,7 @@
 <script>
 (() => {
   const APP_KEY = 'corazonHostHub_v1';
+  const CHIT_KEY = 'corazonHostHub_chits_v1';
   const todayKey = () => new Date().toISOString().slice(0,10);
 
   const openingTasks = [
@@ -813,6 +896,137 @@
   });
   window.resetRotation=()=>{if(confirm('Start a new shift? This clears the current server list and seating history.')){state.rotation={servers:[],current:0,history:[]};save();renderRotation();}};
 
+  // Reservation chits
+  let chitState=loadChitState();
+  function loadChitState(){
+    try{
+      const parsed=JSON.parse(localStorage.getItem(CHIT_KEY)||'{}');
+      if(parsed.date!==todayKey()) return {date:todayKey(),chits:[]};
+      return {date:todayKey(),chits:Array.isArray(parsed.chits)?parsed.chits:[]};
+    }catch(e){return {date:todayKey(),chits:[]};}
+  }
+  function saveChits(){chitState.date=todayKey();localStorage.setItem(CHIT_KEY,JSON.stringify(chitState));}
+  function normalizeTime(v=''){
+    const m=String(v).replace(/\s+/g,' ').match(/\b(\d{1,2}):(\d{2})\s*(AM|PM)\b/i);
+    return m?`${Number(m[1])}:${m[2]} ${m[3].toUpperCase()}`:'';
+  }
+  function looksLikePhone(v=''){
+    const t=String(v).trim();
+    return /^\+?1?\s*[\(\d][\d\s().-]{7,}$/.test(t) && (t.match(/\d/g)||[]).length>=10;
+  }
+  function cleanGuestName(v=''){
+    const lines=String(v).split(/\n+/).map(x=>x.trim()).filter(Boolean).filter(x=>!looksLikePhone(x));
+    return (lines[0]||'').replace(/^['"]|['"]$/g,'').trim();
+  }
+  function cleanNoteText(v=''){
+    let t=String(v).replace(/\r/g,' ').replace(/\s+/g,' ').trim();
+    if(!t||looksLikePhone(t))return '';
+    t=t.replace(/\b\d+\s*Total Visits.*$/i,'').trim();
+    if(/^(confirmed|reserved|seated|arrived|cancelled|canceled)$/i.test(t))return '';
+    if(/^[-–—]$/.test(t))return '';
+    t=t.replace(/^From the guest\s*/i,'').replace(/\s+Visit Notes\s*/i,' · ');
+    return t.trim();
+  }
+  function parseTSV(text){
+    const rows=[];let row=[],cell='',quoted=false;
+    for(let i=0;i<text.length;i++){
+      const ch=text[i],next=text[i+1];
+      if(ch==='"'){
+        if(quoted&&next==='"'){cell+='"';i++;}
+        else quoted=!quoted;
+      }else if(ch==='\t'&&!quoted){row.push(cell);cell='';}
+      else if((ch==='\n'||ch==='\r')&&!quoted){
+        if(ch==='\r'&&next==='\n')i++;
+        row.push(cell);cell='';
+        if(row.some(x=>String(x).trim()!==''))rows.push(row);
+        row=[];
+      }else cell+=ch;
+    }
+    row.push(cell);if(row.some(x=>String(x).trim()!==''))rows.push(row);
+    return rows;
+  }
+  function parseReservations(raw){
+    const rows=parseTSV(String(raw||'').trim());
+    const out=[];let currentTime='',last=null;
+    for(const rawRow of rows){
+      const row=rawRow.map(x=>String(x||'').trim());
+      const joined=row.join(' ').replace(/\s+/g,' ').trim();
+      if(!joined)continue;
+      if(/Guest Name/i.test(joined)&&/Party Size/i.test(joined))continue;
+      const rowTime=normalizeTime(row[0])||normalizeTime(joined);
+      if(rowTime)currentTime=rowTime;
+
+      // Expected spreadsheet columns: Time | Guest Name | Party Size | Table # | Last Visit | Status
+      let guest=cleanGuestName(row[1]||'');
+      let party=String(row[2]||'').match(/^\d{1,2}$/)?.[0]||'';
+      let status=(row[5]||'').trim();
+
+      // Fallback for clipboard formats that shifted columns.
+      if(!guest||!party){
+        const nonempty=row.map((v,i)=>({v,i})).filter(x=>x.v);
+        const nums=nonempty.filter(x=>/^\d{1,4}$/.test(x.v));
+        if(!party&&nums.length)party=nums.find(x=>Number(x.v)>0&&Number(x.v)<=30)?.v||'';
+        if(!guest){
+          const g=nonempty.find(x=>x.i!==0&&!looksLikePhone(x.v)&&!/^\d+$/.test(x.v)&&!/^(confirmed|reserved|seated|arrived|cancelled|canceled)$/i.test(x.v)&&!/Total Visits/i.test(x.v));
+          guest=cleanGuestName(g?.v||'');
+        }
+      }
+
+      const isReservation=Boolean(guest&&party&&!/^(anniversary|birthday|visit notes?)$/i.test(guest)&&!/Total Visits/i.test(guest));
+      if(isReservation){
+        if(/cancelled|canceled/i.test(status))continue;
+        const extra=row.filter((v,i)=>i!==0&&i!==1&&i!==2&&i!==3&&i!==4&&i!==5).map(cleanNoteText).filter(Boolean);
+        const chit={id:Date.now()+Math.random(),name:guest,party,time:currentTime||rowTime||'',notes:extra.join(' · ')};
+        out.push(chit);last=chit;continue;
+      }
+
+      // Non-reservation lines after a guest are treated as occasion / guest notes.
+      const possibleNotes=row.map(cleanNoteText).filter(Boolean).filter(t=>!normalizeTime(t)&&!/Total Visits/i.test(t));
+      const note=possibleNotes.filter(t=>!/^\d+$/.test(t)&&!looksLikePhone(t)).join(' · ');
+      if(note&&last){
+        const pieces=[last.notes,note].filter(Boolean).join(' · ').split(' · ').map(x=>x.trim()).filter(Boolean);
+        last.notes=[...new Set(pieces)].join(' · ');
+      }
+    }
+    // Deduplicate accidental duplicate clipboard rows.
+    const seen=new Set();
+    return out.filter(c=>{const k=[c.name,c.party,c.time].join('|').toLowerCase();if(seen.has(k))return false;seen.add(k);return true;});
+  }
+  function chitHTML(c,print=false){
+    const notes=escapeHTML(c.notes||'');
+    return `<div class="${print?'print-chit':'preview-chit'}"><div class="chit-name">${escapeHTML(c.name||'Guest')}</div><div class="chit-main">${escapeHTML(c.party||'—')} @ __________</div><div class="chit-time">${escapeHTML(c.time||'—')}</div><div class="chit-notes">${notes}</div></div>`;
+  }
+  function renderChits(){
+    const chits=chitState.chits;
+    document.getElementById('chitCountPill').textContent=`${chits.length} chit${chits.length===1?'':'s'}`;
+    document.getElementById('chitEditorSummary').textContent=chits.length?`${chits.length} reservation${chits.length===1?'':'s'} ready to print. Edit anything below before printing.`:'Paste reservations to begin.';
+    const editor=document.getElementById('chitEditor');
+    editor.innerHTML=chits.length?chits.map((c,i)=>`<div class="chit-edit" data-i="${i}"><div class="chit-edit-head"><strong>Chit ${i+1}</strong><button class="mini" data-remove="${i}" aria-label="Remove chit">×</button></div><div class="chit-edit-grid"><div class="field"><label>Guest Name</label><input data-field="name" value="${escapeHTML(c.name)}"></div><div class="field"><label>Party</label><input data-field="party" inputmode="numeric" value="${escapeHTML(c.party)}"></div><div class="field"><label>Time</label><input data-field="time" value="${escapeHTML(c.time)}"></div></div><div class="field notes-field"><label>Occasion / Notes</label><textarea data-field="notes" placeholder="Anniversary, wants the bar, allergy note, etc.">${escapeHTML(c.notes)}</textarea></div></div>`).join(''):'<div class="empty">No chits yet. Paste the spreadsheet above or add one manually.</div>';
+    editor.querySelectorAll('[data-remove]').forEach(b=>b.addEventListener('click',()=>{chitState.chits.splice(Number(b.dataset.remove),1);saveChits();renderChits();}));
+    editor.querySelectorAll('.chit-edit').forEach(el=>{
+      const i=Number(el.dataset.i);
+      el.querySelectorAll('[data-field]').forEach(inp=>inp.addEventListener('input',()=>{chitState.chits[i][inp.dataset.field]=inp.value;saveChits();renderChitPreviews();document.getElementById('chitCountPill').textContent=`${chitState.chits.length} chit${chitState.chits.length===1?'':'s'}`;}));
+    });
+    renderChitPreviews();
+    document.getElementById('printChitsBtn').disabled=!chits.length;
+  }
+  function renderChitPreviews(){
+    const html=chitState.chits.length?chitState.chits.map(c=>chitHTML(c)).join(''):'<div class="empty" style="grid-column:1/-1">Your printable chits will preview here.</div>';
+    document.getElementById('chitPreviewGrid').innerHTML=html;
+    document.getElementById('chitPrintGrid').innerHTML=chitState.chits.map(c=>chitHTML(c,true)).join('');
+  }
+  document.getElementById('buildChitsBtn').addEventListener('click',()=>{
+    const raw=document.getElementById('chitPaste').value;
+    if(!raw.trim()){toast('Paste reservations first');return;}
+    const parsed=parseReservations(raw);
+    if(!parsed.length){alert('I could not find reservation rows in that paste. Make sure the copied cells include Guest Name and Party Size, then try again.');return;}
+    chitState={date:todayKey(),chits:parsed};saveChits();document.getElementById('chitPaste').value='';renderChits();toast(`${parsed.length} chits built`);
+  });
+  document.getElementById('addChitBtn').addEventListener('click',()=>{chitState.chits.push({id:Date.now()+Math.random(),name:'',party:'',time:'',notes:''});saveChits();renderChits();setTimeout(()=>document.querySelector('#chitEditor .chit-edit:last-child input')?.focus(),50);});
+  document.getElementById('clearChitsBtn').addEventListener('click',()=>{if(!chitState.chits.length&&!document.getElementById('chitPaste').value)return;if(confirm('Clear the current reservation chits?')){chitState={date:todayKey(),chits:[]};saveChits();document.getElementById('chitPaste').value='';renderChits();}});
+  document.getElementById('printChitsBtn').addEventListener('click',()=>{if(!chitState.chits.length){toast('No chits to print');return;}renderChitPreviews();document.body.classList.add('printing-chits');setTimeout(()=>window.print(),60);});
+  window.addEventListener('afterprint',()=>document.body.classList.remove('printing-chits'));
+
   // Study
   let filteredCards=[]; let cardIndex=0; let quiz=[]; let quizIndex=0; let quizScore=0; let quizMissed=[]; let quizLocked=false;
   const deckFilter=document.getElementById('deckFilter');
@@ -922,10 +1136,10 @@
     const blob=new Blob([JSON.stringify({app:'Corazon Host Hub',version:1,exported:new Date().toISOString(),state},null,2)],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=`corazon-host-hub-backup-${todayKey()}.json`;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
   });
   document.getElementById('importFile').addEventListener('change',e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const data=JSON.parse(r.result);if(!data.state)throw new Error();state={...blankState(),...data.state};save();location.reload();}catch(err){alert('That backup file could not be read.');}};r.readAsText(f);});
-  document.getElementById('clearAllBtn').addEventListener('click',()=>{if(confirm('Clear ALL saved checklists, rotation history, study progress, and trainee records on this iPad?')){localStorage.removeItem(APP_KEY);location.reload();}});
+  document.getElementById('clearAllBtn').addEventListener('click',()=>{if(confirm('Clear ALL saved checklists, rotation history, reservation chits, study progress, and trainee records on this iPad?')){localStorage.removeItem(APP_KEY);localStorage.removeItem(CHIT_KEY);location.reload();}});
 
   // Initial render
-  renderChecklists();renderTraining();renderRotation();rebuildCategories();refreshFiltered();renderTrainer();
+  renderChecklists();renderTraining();renderRotation();renderChits();rebuildCategories();refreshFiltered();renderTrainer();
 })();
 </script>
 </body>
