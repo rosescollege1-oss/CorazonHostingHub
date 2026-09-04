@@ -376,33 +376,31 @@
     <!-- RESERVATION CHITS -->
     <section class="view" id="chits">
       <div class="hero-small">
-        <div><div class="eyebrow">Reservation Prep</div><h2>Printable Chit Sheet</h2><p class="subtle">Copy the reservation report straight from Resy, paste it here, then print and cut.</p></div>
+        <div><div class="eyebrow">Reservation Prep</div><h2>Printable Chit Sheet</h2><</div>
         <span class="pill" id="chitCountPill">0 chits</span>
       </div>
 
       <div class="grid-2 no-print">
         <div class="card">
           <h3>1. Paste From Resy</h3>
-          <p class="subtle">In ResyOS, generate the reservation report for the correct date and shift. Select the report, copy it, then paste it directly below. You do not need the ResyChits spreadsheet anymore.</p>
+        
           <textarea class="chit-input section-space" id="chitPaste" placeholder="Paste the copied Resy reservation report here…"></textarea>
           <div class="button-row">
             <button class="btn" id="buildChitsBtn">Build chits</button>
             <button class="btn secondary" id="addChitBtn">+ Add one manually</button>
             <button class="btn secondary" id="clearChitsBtn">Clear</button>
           </div>
-          <div class="chit-privacy"><strong>Guest privacy:</strong> phone numbers are ignored. The app keeps only the information needed for the printed chits and automatically clears this reservation list on a new day.</div>
+      
         </div>
 
         <div class="card">
           <h3>Resy → Chits → Print</h3>
           <div class="chit-help">
-            <span class="num">1</span><div><strong>Generate the report in Resy.</strong><br>Open the reservation report for the correct date and meal period. The normal report with Time, Guest Name, Party Size, Table #, Last Visit and Status is perfect.</div>
-            <span class="num">2</span><div><strong>Copy it straight from Resy.</strong><br>Select the report and tap Copy. Headers, phone numbers, visit totals, statuses and note rows can all come with it — the app filters out what it does not need.</div>
-            <span class="num">3</span><div><strong>Paste + Build.</strong><br>Paste the report in the box on the left and tap <strong>Build chits</strong>. The app keeps the guest name, party size, reservation time and occasion/guest notes. The table assignment from Resy is intentionally ignored.</div>
+            <span class="num">1</span><div><strong>Generate the report in Resy.</strong><br>Open the reservation report for the correct date and meal period. </div>
+            <span class="num">2</span><div><strong>Copy it straight from Resy.</strong><br>Select the entire report and tap Copy. Headers, phone numbers, visit totals, statuses and note rows can all come with it — the app filters out what it does not need.</div>
+            <span class="num">3</span><div><strong>Paste + Build.</strong><br>Paste the report in the box on the left and tap <strong>Build chits</strong>. The app keeps the guest name, party size, reservation time and occasion/guest notes.</div>
             <span class="num">4</span><div><strong>Check + Print.</strong><br>Quickly review the editable list, then tap <strong>Print chits</strong>. Each chit prints at exactly 2 in × 2 in, up to 20 per letter-size page.</div>
           </div>
-          <div class="note section-space"><strong>At the door:</strong> the printed line reads <strong>party size @ ______</strong>. Write the actual table number in the blank when the party arrives, then use the reservation time underneath.</div>
-          <div class="chit-privacy section-space"><strong>No spreadsheet step:</strong> Resy report → copy → Corazón Host Hub → print.</div>
         </div>
       </div>
 
