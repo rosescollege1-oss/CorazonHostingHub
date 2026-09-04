@@ -218,22 +218,23 @@
       .form-grid{grid-template-columns:1fr}
     }
     @media print{
-      @page{size:letter portrait;margin:.3in}
+      @page{size:letter portrait;margin:.25in}
       .bottom-nav,.app-header,.button-row,.icon-btn,.study-toolbar,.mode-tabs{display:none!important}
       body{background:white;padding:0}
       .view{display:none!important}
-      body:not(.printing-chits) #handbook.view{display:block!important}
+      body.printing-handbook #handbook.view{display:block!important}
       body.printing-chits #chits.view{display:block!important}
       main{max-width:none;padding:0}
       .card{box-shadow:none;break-inside:avoid}
       body.printing-chits #chits .no-print,body.printing-chits #chits .hero-small,body.printing-chits #chits .chit-preview-title,body.printing-chits #chits .chit-preview-grid{display:none!important}
-      body.printing-chits #chits .print-chits-grid{display:grid!important;grid-template-columns:repeat(3,1fr);grid-auto-rows:3.28in;gap:0}
+      body.printing-chits #chits .print-chits-grid{display:grid!important;grid-template-columns:repeat(4,2in);grid-auto-rows:2in;grid-auto-flow:row;gap:0;width:8in;margin:0;padding:0}
       body.printing-chits #chits{margin:0;padding:0}
-      .print-chit{border:.8pt dashed #777;padding:.16in;display:flex;flex-direction:column;break-inside:avoid;page-break-inside:avoid;overflow:hidden;background:white}
-      .print-chit .chit-name{font-family:Georgia,"Times New Roman",serif;font-size:19pt;line-height:1.03;font-weight:700;margin:0 0 .1in}
-      .print-chit .chit-main{font-size:15pt;font-weight:900;margin-bottom:.05in}
-      .print-chit .chit-time{font-size:12pt;font-weight:800;margin-bottom:.08in;color:#222}
-      .print-chit .chit-notes{font-size:10.5pt;line-height:1.28;white-space:pre-wrap;overflow-wrap:anywhere;margin-top:auto;border-top:.5pt solid #aaa;padding-top:.08in}
+      .print-chit{width:2in;height:2in;border:.8pt dashed #777;padding:.11in;display:flex;flex-direction:column;break-inside:avoid;page-break-inside:avoid;overflow:hidden;background:white}
+      .print-chit:nth-child(20n+1):not(:first-child){break-before:page;page-break-before:always}
+      .print-chit .chit-name{font-family:Georgia,"Times New Roman",serif;font-size:18pt;line-height:1;font-weight:700;margin:0 0 .07in}
+      .print-chit .chit-main{font-size:16pt;line-height:1.05;font-weight:900;margin-bottom:.035in;white-space:nowrap}
+      .print-chit .chit-time{font-size:13.5pt;line-height:1.05;font-weight:900;margin-bottom:.05in;color:#222}
+      .print-chit .chit-notes{font-size:11pt;line-height:1.16;white-space:pre-wrap;overflow-wrap:anywhere;margin-top:auto;border-top:.5pt solid #aaa;padding-top:.045in}
       .print-chit .chit-notes:empty{border-top:0}
     }
   </style>
@@ -277,7 +278,7 @@
     <section class="view" id="handbook">
       <div class="hero-small">
         <div><h2>Host Handbook</h2></div>
-        <button class="btn secondary" onclick="window.print()">Print handbook</button>
+        <button class="btn secondary" onclick="printHandbook()">Print handbook</button>
       </div>
       <div class="handbook-nav" id="handbookNav">
         <button class="chip active" data-anchor="hb-preshift">Pre-Shift</button>
@@ -375,15 +376,15 @@
     <!-- RESERVATION CHITS -->
     <section class="view" id="chits">
       <div class="hero-small">
-        <div><div class="eyebrow">Reservation Prep</div><h2>Printable Chit Sheet</h2><p class="subtle">Paste the reservation spreadsheet, check the preview, then print and cut.</p></div>
+        <div><div class="eyebrow">Reservation Prep</div><h2>Printable Chit Sheet</h2><p class="subtle">Copy the reservation report straight from Resy, paste it here, then print and cut.</p></div>
         <span class="pill" id="chitCountPill">0 chits</span>
       </div>
 
       <div class="grid-2 no-print">
         <div class="card">
-          <h3>1. Paste Reservations</h3>
-          <p class="subtle">In Google Sheets, select the reservation rows and copy them. Paste everything below — headers, summary rows and phone numbers are okay.</p>
-          <textarea class="chit-input section-space" id="chitPaste" placeholder="Paste the copied Google Sheets cells here…"></textarea>
+          <h3>1. Paste From Resy</h3>
+          <p class="subtle">In ResyOS, generate the reservation report for the correct date and shift. Select the report, copy it, then paste it directly below. You do not need the ResyChits spreadsheet anymore.</p>
+          <textarea class="chit-input section-space" id="chitPaste" placeholder="Paste the copied Resy reservation report here…"></textarea>
           <div class="button-row">
             <button class="btn" id="buildChitsBtn">Build chits</button>
             <button class="btn secondary" id="addChitBtn">+ Add one manually</button>
@@ -393,14 +394,15 @@
         </div>
 
         <div class="card">
-          <h3>How It Works</h3>
+          <h3>Resy → Chits → Print</h3>
           <div class="chit-help">
-            <span class="num">1</span><div>Copy the reservation table from the spreadsheet exactly as-is.</div>
-            <span class="num">2</span><div>Tap <strong>Build chits</strong>. The app pulls the guest name, party size, reservation time and notes. The table number stays blank so you can write it in when the party arrives.</div>
-            <span class="num">3</span><div>Fix anything in the editable list if the pasted report formatted something strangely.</div>
-            <span class="num">4</span><div>Tap <strong>Print chits</strong>. They print nine to a letter-size page with cut lines.</div>
+            <span class="num">1</span><div><strong>Generate the report in Resy.</strong><br>Open the reservation report for the correct date and meal period. The normal report with Time, Guest Name, Party Size, Table #, Last Visit and Status is perfect.</div>
+            <span class="num">2</span><div><strong>Copy it straight from Resy.</strong><br>Select the report and tap Copy. Headers, phone numbers, visit totals, statuses and note rows can all come with it — the app filters out what it does not need.</div>
+            <span class="num">3</span><div><strong>Paste + Build.</strong><br>Paste the report in the box on the left and tap <strong>Build chits</strong>. The app keeps the guest name, party size, reservation time and occasion/guest notes. The table assignment from Resy is intentionally ignored.</div>
+            <span class="num">4</span><div><strong>Check + Print.</strong><br>Quickly review the editable list, then tap <strong>Print chits</strong>. Each chit prints at exactly 2 in × 2 in, up to 20 per letter-size page.</div>
           </div>
-          <div class="note section-space"><strong>Chit format:</strong> Guest name · party size @ ______ (write the table number in when they arrive) · reservation time · occasion / guest notes.</div>
+          <div class="note section-space"><strong>At the door:</strong> the printed line reads <strong>party size @ ______</strong>. Write the actual table number in the blank when the party arrives, then use the reservation time underneath.</div>
+          <div class="chit-privacy section-space"><strong>No spreadsheet step:</strong> Resy report → copy → Corazón Host Hub → print.</div>
         </div>
       </div>
 
@@ -499,7 +501,7 @@
       <div class="button-row"><button class="btn" id="exportBtn">Export backup</button><label class="btn secondary" for="importFile">Restore backup</label><input id="importFile" type="file" accept="application/json" hidden></div>
       <div class="divider"></div>
       <h4>About this build</h4>
-      <p class="tiny">Built as a single self-contained HTML file for GitHub Pages / Safari Home Screen use. Host procedures are based on the provided Corazón host sheet. Menu study cards are based on the restaurant’s official online menu as retrieved September 2026. The First Serving Test deck uses the Quizlet cards provided by the user. Reservation chits are generated locally from pasted spreadsheet data; phone numbers are ignored.</p>
+      <p class="tiny">Built as a single self-contained HTML file for GitHub Pages / Safari Home Screen use. Host procedures are based on the provided Corazón host sheet. Menu study cards are based on the restaurant’s official online menu as retrieved September 2026. The First Serving Test deck uses the Quizlet cards provided by the user. Reservation chits are generated locally from a pasted Resy reservation report; phone numbers and Resy table assignments are ignored.</p>
       <div class="divider"></div>
       <button class="btn danger" id="clearAllBtn">Clear all saved app data</button>
     </div>
@@ -915,14 +917,17 @@
     return /^\+?1?\s*[\(\d][\d\s().-]{7,}$/.test(t) && (t.match(/\d/g)||[]).length>=10;
   }
   function cleanGuestName(v=''){
+    const phonePattern=/\+?1?\s*(?:\(\d{3}\)|\d{3})[\s.-]*\d{3}[\s.-]*\d{4}\b/g;
     const lines=String(v).split(/\n+/).map(x=>x.trim()).filter(Boolean).filter(x=>!looksLikePhone(x));
-    return (lines[0]||'').replace(/^['"]|['"]$/g,'').trim();
+    return (lines[0]||'').replace(phonePattern,'').replace(/\s{2,}/g,' ').replace(/^['"]|['"]$/g,'').trim();
   }
   function cleanNoteText(v=''){
     let t=String(v).replace(/\r/g,' ').replace(/\s+/g,' ').trim();
     if(!t||looksLikePhone(t))return '';
     t=t.replace(/\b\d+\s*Total Visits.*$/i,'').trim();
     if(/^(confirmed|reserved|seated|arrived|cancelled|canceled)$/i.test(t))return '';
+    if(/^(time|guest name|party size|table #?|last visit|status|dinner|lunch|brunch|visit notes?)$/i.test(t))return '';
+    if(/^generated on\b/i.test(t)||/^\d+\s+total covers$/i.test(t)||/^RES:\s*/i.test(t))return '';
     if(/^[-–—]$/.test(t))return '';
     t=t.replace(/^From the guest\s*/i,'').replace(/\s+Visit Notes\s*/i,' · ');
     return t.trim();
@@ -945,7 +950,121 @@
     row.push(cell);if(row.some(x=>String(x).trim()!==''))rows.push(row);
     return rows;
   }
+  function parseResyTokenPaste(raw){
+    const tokens=String(raw||'').replace(/\r/g,'\n').split(/[\t\n]+/).map(x=>x.trim()).filter(Boolean);
+    const out=[];let last=null;
+    const exactTime=v=>/^\d{1,2}:\d{2}\s*(AM|PM)$/i.test(String(v||'').trim());
+    const statusRx=/^(confirmed|reserved|seated|arrived|cancelled|canceled)$/i;
+    const ignoreRx=/^(time|guest name|party size|table #?|last visit|status|dinner|lunch|brunch|visit notes?)$/i;
+    const isDate=v=>/^\d{1,2}\/\d{1,2}\/\d{4}$/.test(v)||/^[A-Za-z]+\s+\d{1,2},\s+\d{4}$/.test(v);
+
+    for(let i=0;i<tokens.length;i++){
+      const token=tokens[i];
+
+      if(exactTime(token)){
+        const time=normalizeTime(token);
+        let j=i+1;
+
+        while(j<tokens.length && (ignoreRx.test(tokens[j]) || looksLikePhone(tokens[j])))j++;
+        const guest=cleanGuestName(tokens[j]||'');
+        if(!guest || /^\d+$/.test(guest) || /Total Visits/i.test(guest)){continue;}
+        j++;
+
+        if(j<tokens.length && looksLikePhone(tokens[j]))j++;
+
+        let party='',partyIndex=-1;
+        for(let k=j;k<Math.min(tokens.length,j+5);k++){
+          if(/^\d{1,2}$/.test(tokens[k]) && Number(tokens[k])>=1 && Number(tokens[k])<=30){
+            party=tokens[k];partyIndex=k;break;
+          }
+          if(exactTime(tokens[k]))break;
+        }
+        if(!party)continue;
+
+        let status='',statusIndex=-1;
+        for(let k=partyIndex+1;k<Math.min(tokens.length,partyIndex+7);k++){
+          if(statusRx.test(tokens[k])){status=tokens[k];statusIndex=k;break;}
+          if(exactTime(tokens[k]))break;
+        }
+
+        if(/cancelled|canceled/i.test(status)){
+          if(statusIndex>=0)i=statusIndex;
+          continue;
+        }
+
+        const chit={id:Date.now()+Math.random(),name:guest,party,time,notes:''};
+        out.push(chit);last=chit;
+        if(statusIndex>=0)i=statusIndex;
+        continue;
+      }
+
+      if(last){
+        const note=cleanNoteText(token);
+        if(note && !looksLikePhone(note) && !ignoreRx.test(note) && !statusRx.test(note) &&
+           !/Total Visits/i.test(note) && !/^RES:/i.test(note) && !/^\d{1,4}$/.test(note) &&
+           !isDate(note) && !exactTime(note)){
+          const pieces=[last.notes,note].filter(Boolean).join(' · ').split(' · ').map(x=>x.trim()).filter(Boolean);
+          last.notes=[...new Set(pieces)].join(' · ');
+        }
+      }
+    }
+
+    const seen=new Set();
+    return out.filter(c=>{
+      const k=[c.name,c.party,c.time].join('|').toLowerCase();
+      if(seen.has(k))return false;
+      seen.add(k);
+      return true;
+    });
+  }
+
+  function parseResyLinePaste(raw){
+    const lines=String(raw||'').replace(/\r/g,'\n').split(/\n+/).map(x=>x.trim()).filter(Boolean);
+    const out=[];let last=null;
+    const exactTime=v=>/^\d{1,2}:\d{2}\s*(AM|PM)$/i.test(String(v||'').trim());
+    const statusRx=/^(confirmed|reserved|seated|arrived|cancelled|canceled)$/i;
+    const ignoreRx=/^(time|guest name|party size|table #?|last visit|status|dinner|lunch|brunch)$/i;
+    for(let i=0;i<lines.length;i++){
+      const line=lines[i];
+      if(exactTime(line)){
+        const time=normalizeTime(line);
+        let j=i+1;
+        while(j<lines.length && (ignoreRx.test(lines[j]) || looksLikePhone(lines[j])))j++;
+        let guest=cleanGuestName(lines[j]||'');
+        if(!guest || /^\d+$/.test(guest) || /Total Visits/i.test(guest)){continue;}
+        j++;
+        if(j<lines.length && looksLikePhone(lines[j]))j++;
+        let party='';
+        while(j<lines.length && j<i+8 && !exactTime(lines[j])){
+          if(/^\d{1,2}$/.test(lines[j]) && Number(lines[j])>=1 && Number(lines[j])<=30){party=lines[j];break;}
+          j++;
+        }
+        if(!party)continue;
+        let statusIndex=-1,status='';
+        for(let k=j+1;k<Math.min(lines.length,j+7);k++){
+          if(statusRx.test(lines[k])){statusIndex=k;status=lines[k];break;}
+          if(exactTime(lines[k]))break;
+        }
+        if(/cancelled|canceled/i.test(status)){if(statusIndex>=0)i=statusIndex;continue;}
+        const chit={id:Date.now()+Math.random(),name:guest,party,time,notes:''};
+        out.push(chit);last=chit;
+        if(statusIndex>=0)i=statusIndex;
+        continue;
+      }
+      const note=cleanNoteText(line);
+      if(last && note && !looksLikePhone(note) && !/Total Visits/i.test(note) && !ignoreRx.test(note) &&
+         !/^\d{1,4}$/.test(note) && !/^\d{1,2}\/\d{1,2}\/\d{4}$/.test(note)){
+        const pieces=[last.notes,note].filter(Boolean).join(' · ').split(' · ').map(x=>x.trim()).filter(Boolean);
+        last.notes=[...new Set(pieces)].join(' · ');
+      }
+    }
+    const seen=new Set();
+    return out.filter(c=>{const k=[c.name,c.party,c.time].join('|').toLowerCase();if(seen.has(k))return false;seen.add(k);return true;});
+  }
+
   function parseReservations(raw){
+    const direct=parseResyTokenPaste(raw);
+    if(direct.length)return direct;
     const rows=parseTSV(String(raw||'').trim());
     const out=[];let currentTime='',last=null;
     for(const rawRow of rows){
@@ -990,7 +1109,9 @@
     }
     // Deduplicate accidental duplicate clipboard rows.
     const seen=new Set();
-    return out.filter(c=>{const k=[c.name,c.party,c.time].join('|').toLowerCase();if(seen.has(k))return false;seen.add(k);return true;});
+    const parsed=out.filter(c=>{const k=[c.name,c.party,c.time].join('|').toLowerCase();if(seen.has(k))return false;seen.add(k);return true;});
+    if(parsed.length)return parsed;
+    return parseResyLinePaste(raw);
   }
   function chitHTML(c,print=false){
     const notes=escapeHTML(c.notes||'');
@@ -1001,7 +1122,7 @@
     document.getElementById('chitCountPill').textContent=`${chits.length} chit${chits.length===1?'':'s'}`;
     document.getElementById('chitEditorSummary').textContent=chits.length?`${chits.length} reservation${chits.length===1?'':'s'} ready to print. Edit anything below before printing.`:'Paste reservations to begin.';
     const editor=document.getElementById('chitEditor');
-    editor.innerHTML=chits.length?chits.map((c,i)=>`<div class="chit-edit" data-i="${i}"><div class="chit-edit-head"><strong>Chit ${i+1}</strong><button class="mini" data-remove="${i}" aria-label="Remove chit">×</button></div><div class="chit-edit-grid"><div class="field"><label>Guest Name</label><input data-field="name" value="${escapeHTML(c.name)}"></div><div class="field"><label>Party</label><input data-field="party" inputmode="numeric" value="${escapeHTML(c.party)}"></div><div class="field"><label>Time</label><input data-field="time" value="${escapeHTML(c.time)}"></div></div><div class="field notes-field"><label>Occasion / Notes</label><textarea data-field="notes" placeholder="Anniversary, wants the bar, allergy note, etc.">${escapeHTML(c.notes)}</textarea></div></div>`).join(''):'<div class="empty">No chits yet. Paste the spreadsheet above or add one manually.</div>';
+    editor.innerHTML=chits.length?chits.map((c,i)=>`<div class="chit-edit" data-i="${i}"><div class="chit-edit-head"><strong>Chit ${i+1}</strong><button class="mini" data-remove="${i}" aria-label="Remove chit">×</button></div><div class="chit-edit-grid"><div class="field"><label>Guest Name</label><input data-field="name" value="${escapeHTML(c.name)}"></div><div class="field"><label>Party</label><input data-field="party" inputmode="numeric" value="${escapeHTML(c.party)}"></div><div class="field"><label>Time</label><input data-field="time" value="${escapeHTML(c.time)}"></div></div><div class="field notes-field"><label>Occasion / Notes</label><textarea data-field="notes" placeholder="Anniversary, wants the bar, allergy note, etc.">${escapeHTML(c.notes)}</textarea></div></div>`).join(''):'<div class="empty">No chits yet. Paste the Resy reservation report above or add one manually.</div>';
     editor.querySelectorAll('[data-remove]').forEach(b=>b.addEventListener('click',()=>{chitState.chits.splice(Number(b.dataset.remove),1);saveChits();renderChits();}));
     editor.querySelectorAll('.chit-edit').forEach(el=>{
       const i=Number(el.dataset.i);
@@ -1019,13 +1140,14 @@
     const raw=document.getElementById('chitPaste').value;
     if(!raw.trim()){toast('Paste reservations first');return;}
     const parsed=parseReservations(raw);
-    if(!parsed.length){alert('I could not find reservation rows in that paste. Make sure the copied cells include Guest Name and Party Size, then try again.');return;}
+    if(!parsed.length){alert('I could not find reservation rows in that paste. Copy the reservation report from Resy — including the Time, Guest Name and Party Size columns — then try again.');return;}
     chitState={date:todayKey(),chits:parsed};saveChits();document.getElementById('chitPaste').value='';renderChits();toast(`${parsed.length} chits built`);
   });
   document.getElementById('addChitBtn').addEventListener('click',()=>{chitState.chits.push({id:Date.now()+Math.random(),name:'',party:'',time:'',notes:''});saveChits();renderChits();setTimeout(()=>document.querySelector('#chitEditor .chit-edit:last-child input')?.focus(),50);});
   document.getElementById('clearChitsBtn').addEventListener('click',()=>{if(!chitState.chits.length&&!document.getElementById('chitPaste').value)return;if(confirm('Clear the current reservation chits?')){chitState={date:todayKey(),chits:[]};saveChits();document.getElementById('chitPaste').value='';renderChits();}});
-  document.getElementById('printChitsBtn').addEventListener('click',()=>{if(!chitState.chits.length){toast('No chits to print');return;}renderChitPreviews();document.body.classList.add('printing-chits');setTimeout(()=>window.print(),60);});
-  window.addEventListener('afterprint',()=>document.body.classList.remove('printing-chits'));
+  window.printHandbook=()=>{document.body.classList.remove('printing-chits');document.body.classList.add('printing-handbook');requestAnimationFrame(()=>requestAnimationFrame(()=>setTimeout(()=>window.print(),180)));};
+  document.getElementById('printChitsBtn').addEventListener('click',()=>{if(!chitState.chits.length){toast('No chits to print');return;}renderChitPreviews();document.body.classList.remove('printing-handbook');document.body.classList.add('printing-chits');requestAnimationFrame(()=>requestAnimationFrame(()=>setTimeout(()=>window.print(),180)));});
+  window.addEventListener('afterprint',()=>document.body.classList.remove('printing-chits','printing-handbook'));
 
   // Study
   let filteredCards=[]; let cardIndex=0; let quiz=[]; let quizIndex=0; let quizScore=0; let quizMissed=[]; let quizLocked=false;
